@@ -12,6 +12,18 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const newUser = await User.create({ name, email, password });
 
+  // Generate jwt token
+  const token = generateToken(newUser._id);
+
+  // Send HTTP-only cookie
+  res.cookie('token', token, {
+    path: '/',
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000 * 86400),
+    sameSite: 'none',
+    secure: true,
+  });
+
   if (newUser) {
     const { _id, name, email, photo, phone, bio } = newUser;
     res.status(201).json({
@@ -21,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
       photo,
       phone,
       bio,
-      token: generateToken(_id),
+      token,
     });
   } else {
     res.status(400);

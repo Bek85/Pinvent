@@ -9,8 +9,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
     });
     console.log(
-      `MongoDB connected: ${connection.connection.host}`
-      // .cyan.underline
+      `MongoDB connected: ${connection.connection.host}`.cyan.underline
     );
   } catch (error) {
     console.log(`Error: ${error.message}`);
