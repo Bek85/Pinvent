@@ -14,4 +14,9 @@ const userRegisterValidator = [
     .withMessage('Password must be at least 6 characters long'),
 ];
 
-module.exports = { userRegisterValidator };
+const userLoginValidator = [
+  check('email').not().isEmpty().withMessage('Please enter your email'),
+  check('password').not().isEmpty().withMessage('Please enter your password'),
+];
+
+module.exports = { userRegisterValidator, userLoginValidator };
