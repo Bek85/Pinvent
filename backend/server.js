@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const connectDB = require('./config/connectDB');
 const PORT = process.env.PORT || 8000;
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -14,10 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // Routes
-
-app.get('/', (req, res) => {
-  res.send('Home route');
-});
+app.use('/api/users', userRoutes);
 
 const startServer = async () => {
   try {
