@@ -5,6 +5,7 @@ const cors = require('cors');
 const connectDB = require('./config/connectDB');
 const PORT = process.env.PORT || 8000;
 const userRoutes = require('./routes/userRoutes');
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(cors());
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use(notFound);
+app.use(errorHandler);
 
 const startServer = async () => {
   try {

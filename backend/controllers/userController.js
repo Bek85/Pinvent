@@ -1,7 +1,7 @@
 const User = require('../models/userModel');
 
 const registerUser = (req, res) => {
-  console.log('user register controller');
+  res.send('new user registered');
 };
 
 module.exports = { registerUser };
