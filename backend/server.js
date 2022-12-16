@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const morgan = require('morgan');
 const connectDB = require('./config/connectDB');
 const PORT = process.env.PORT || 8000;
 const userRoutes = require('./routes/userRoutes');
@@ -14,6 +14,7 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(morgan('tiny'));
 
 // Routes
 app.use('/api/users', userRoutes);
