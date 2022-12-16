@@ -7,6 +7,11 @@ const PORT = process.env.PORT || 8000;
 
 const app = express();
 
+// Middleware setup
+
+app.use(express.json());
+app.use(cors());
+
 const startServer = async () => {
   try {
     await connectDB();
