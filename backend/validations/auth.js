@@ -1,7 +1,7 @@
 const { check, body } = require('express-validator');
 
 const userRegisterValidator = [
-  check('name').not().isEmpty().withMessage('Name is required'),
+  check('name', 'Name is required').not().isEmpty(),
   check('email', 'Email is required')
     .not()
     .isEmpty()

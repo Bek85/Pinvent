@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+
 const User = require('../models/userModel');
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -25,7 +26,6 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Invalid user data');
   }
-  newUser.save();
 });
 
 module.exports = { registerUser };
