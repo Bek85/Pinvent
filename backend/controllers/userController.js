@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 const generateToken = require('../utils/generateToken');
 
+//* @desc Register a new user
+//* @route POST /api/users
+//* @access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
   const userExists = await User.findOne({ email: req.body.email });
@@ -42,6 +45,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+//* @desc Login user
+//* @route POST /api/users/login
+//* @access Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -80,6 +86,9 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+//* @desc Logout user
+//* @route GET /api/users/logout
+//* @access Public
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie('token', '', {
     path: '/',
@@ -91,4 +100,11 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Successfully logged out' });
 });
 
-module.exports = { registerUser, loginUser, logoutUser };
+//* @desc Get user profile
+//* @route GET /api/users/profile
+//* @access Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  res.send('user profile endpoint');
+});
+
+module.exports = { registerUser, loginUser, logoutUser, getUserProfile };
