@@ -6,6 +6,7 @@ const {
   logoutUser,
   getUserProfile,
   getLoginStatus,
+  updateUser,
 } = require('../controllers/userController');
 const {
   userRegisterValidator,
@@ -21,5 +22,6 @@ router.route('/login').post(userLoginValidator, runValidation, loginUser);
 router.route('/logout').get(logoutUser);
 router.route('/profile').get(protect, getUserProfile);
 router.route('/loggedin').get(getLoginStatus);
+router.route('/updateuser').patch(protect, updateUser);
 
 module.exports = router;
