@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const generateToken = require('../utils/generateToken');
 
@@ -121,4 +122,21 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser, logoutUser, getUserProfile };
+const getLoginStatus = asyncHandler(async (req, res) => {
+  const token = req.headers.cookie;
+
+  if (!token) {
+    res.json(false);
+  }
+  const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(verifiedToken);
+  verifiedToken ? res.json(true) : res.json(false);
+});
+
+module.exports = {
+  registerUser,
+  loginUser,
+  logoutUser,
+  getUserProfile,
+  getLoginStatus,
+};
