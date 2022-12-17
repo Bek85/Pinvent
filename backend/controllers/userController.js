@@ -104,7 +104,21 @@ const logoutUser = asyncHandler(async (req, res) => {
 //* @route GET /api/users/profile
 //* @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.send('user profile endpoint');
+  const user = await User.findById(req.user._id);
+  if (user) {
+    const { _id, name, email, photo, phone, bio } = user;
+    res.status(200).json({
+      _id,
+      name,
+      email,
+      photo,
+      phone,
+      bio,
+    });
+  } else {
+    res.status(400);
+    throw new Error('User not found');
+  }
 });
 
 module.exports = { registerUser, loginUser, logoutUser, getUserProfile };
