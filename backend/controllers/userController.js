@@ -164,6 +164,32 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+//* @desc Update user password
+//* @route PATCH /api/users/changepassword
+//* @access Private
+const changePassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const { oldPassword, password } = req.body;
+
+  if (!user) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  // Check if old password matches the password in database
+  const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password);
+
+  // Save new password
+  if (user && passwordIsCorrect) {
+    user.password = password;
+    await user.save();
+    res.status(200).send('Password has been updated successfully');
+  } else {
+    res.status(400);
+    throw new Error('Old password is incorrect');
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -171,4 +197,5 @@ module.exports = {
   getUserProfile,
   getLoginStatus,
   updateUser,
+  changePassword,
 };

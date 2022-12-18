@@ -19,4 +19,19 @@ const userLoginValidator = [
   check('password').not().isEmpty().withMessage('Please enter your password'),
 ];
 
-module.exports = { userRegisterValidator, userLoginValidator };
+const changePasswordValidator = [
+  check('oldPassword')
+    .not()
+    .isEmpty()
+    .withMessage('Please enter your old password'),
+  check('password')
+    .not()
+    .isEmpty()
+    .withMessage('Please enter your new password'),
+];
+
+module.exports = {
+  userRegisterValidator,
+  userLoginValidator,
+  changePasswordValidator,
+};
