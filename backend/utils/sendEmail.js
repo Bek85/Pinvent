@@ -23,8 +23,9 @@ const sendEmail = async (subject, message, sendTo, sendFrom, replyTo) => {
   transporter.sendMail(options, function (err, info) {
     if (err) {
       console.log(err);
+    } else {
+      console.log(info);
     }
-    console.log(info);
   });
 };
 

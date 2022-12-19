@@ -1,7 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require('../models/userModel');
+const Token = require('../models/tokenModel');
 const generateToken = require('../utils/generateToken');
 
 //* @desc Register a new user
@@ -194,7 +196,24 @@ const changePassword = asyncHandler(async (req, res) => {
 //* @route POST /api/users/resetpassword
 //* @access Public
 const resetPassword = asyncHandler(async (req, res) => {
-  res.send('password reset endpoint');
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    res.status(404);
+    throw new Error('User does not exist');
+  }
+
+  //* Create reset token
+  let resetToken = crypto.randomBytes(32).toString('hex') + user._id;
+
+  //* Hash token before saving to database
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  res.send(hashedToken);
 });
 
 module.exports = {
