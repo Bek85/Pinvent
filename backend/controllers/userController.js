@@ -193,7 +193,7 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 });
 
-//* @desc Reset user password
+//* @desc Send email to reset password
 //* @route POST /api/users/forgotpassword
 //* @access Public
 const forgotPassword = asyncHandler(async (req, res) => {
@@ -256,6 +256,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
+//* @desc Reset user password
+//* @route POST /api/users/resetpassword
+//* @access Public
 const resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const { resetToken } = req.params;

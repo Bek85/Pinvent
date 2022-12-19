@@ -3,6 +3,9 @@ const cloudinary = require('../config/cloudinary');
 const Product = require('../models/productModel');
 const { fileSizeFormatter } = require('../utils/formatFileSize');
 
+//* @desc Create a new product
+//* @route POST /api/products
+//* @access Private
 const createProduct = asyncHandler(async (req, res) => {
   const { name, sku, category, qty, price, description } = req.body;
   const user = req.user;
@@ -46,4 +49,14 @@ const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(product);
 });
 
-module.exports = { createProduct };
+//* @desc Get all products for a particular user
+//* @route GET /api/products
+//* @access Private
+const getProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({ user: req.user._id }).sort(
+    '-createdAt'
+  );
+  res.status(200).json(products);
+});
+
+module.exports = { createProduct, getProducts };
