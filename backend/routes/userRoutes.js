@@ -8,6 +8,7 @@ const {
   getLoginStatus,
   updateUser,
   changePassword,
+  resetPassword,
 } = require('../controllers/userController');
 const {
   userRegisterValidator,
@@ -28,5 +29,7 @@ router.route('/updateuser').patch(protect, updateUser);
 router
   .route('/changepassword')
   .patch(protect, changePasswordValidator, runValidation, changePassword);
+
+router.route('/resetpassword').post(resetPassword);
 
 module.exports = router;

@@ -190,6 +190,13 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 });
 
+//* @desc Reset user password
+//* @route POST /api/users/resetpassword
+//* @access Public
+const resetPassword = asyncHandler(async (req, res) => {
+  res.send('password reset endpoint');
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -198,4 +205,5 @@ module.exports = {
   getLoginStatus,
   updateUser,
   changePassword,
+  resetPassword,
 };

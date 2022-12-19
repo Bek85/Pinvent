@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const UserSchema = Schema(
+const UserSchema = new Schema(
   {
     name: {
       type: String,
