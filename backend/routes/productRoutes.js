@@ -4,7 +4,16 @@ const { createProduct } = require('../controllers/productController');
 const { protect } = require('../middleware/authMiddleware');
 const { runValidation } = require('../validations');
 const { productValidator } = require('../validations/product');
+const upload = require('../utils/fileUpload');
 
-router.route('/').post(protect, productValidator, runValidation, createProduct);
+router
+  .route('/')
+  .post(
+    protect,
+    upload.single('image'),
+    productValidator,
+    runValidation,
+    createProduct
+  );
 
 module.exports = router;
