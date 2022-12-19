@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const User = require('../models/userModel');
 const Token = require('../models/tokenModel');
 const generateToken = require('../utils/generateToken');
+const sendEmail = require('../utils/sendEmail');
 
 //* @desc Register a new user
 //* @route POST /api/users
@@ -204,6 +205,12 @@ const resetPassword = asyncHandler(async (req, res) => {
     throw new Error('User does not exist');
   }
 
+  // Delete token if it exists in database
+  let token = await Token.findOne({ userId: user._id });
+  if (token) {
+    await token.deleteOne();
+  }
+
   //* Create reset token
   let resetToken = crypto.randomBytes(32).toString('hex') + user._id;
 
@@ -213,7 +220,40 @@ const resetPassword = asyncHandler(async (req, res) => {
     .update(resetToken)
     .digest('hex');
 
-  res.send(hashedToken);
+  //* Save token to database
+  await new Token({
+    userId: user._id,
+    token: hashedToken,
+    createdAt: Date.now(),
+    expiresAt: Date.now() + 30 * (60 * 1000), // 30 minutes
+  }).save();
+
+  //* Construct reset url
+  const resetUrl = `${process.env.CLIENT_URL}/resetpassword/${resetToken}`;
+
+  //* Reset email
+  const message = `
+    <h2>Hello ${user.name}!</h2>
+    <p>Please use the link below to reset your password.</p>
+    <p>The reset link is valid only for 30 minutes.</p>
+    <a href="${resetUrl}" clicktracking=off>${resetUrl}</a>
+    <p>Regards...</p>
+    <p>Pinvent Team</p>
+  `;
+
+  const subject = 'Password Reset Request';
+  const sendTo = user.email;
+  const sendFrom = process.env.EMAIL_USER;
+
+  try {
+    await sendEmail(subject, message, sendTo, sendFrom);
+    res
+      .status(200)
+      .json({ success: true, message: 'Reset email has been sent' });
+  } catch (error) {
+    res.status(500);
+    throw new Error('Email has not been sent. Please try again.');
+  }
 });
 
 module.exports = {
