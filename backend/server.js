@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const colors = require('colors');
+const path = require('path');
 const connectDB = require('./config/connectDB');
 const PORT = process.env.PORT || 8000;
 const userRoutes = require('./routes/userRoutes');
@@ -19,6 +20,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(morgan('tiny'));
+
+app.use('uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/users', userRoutes);
