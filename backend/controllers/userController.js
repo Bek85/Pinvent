@@ -194,9 +194,9 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 //* @desc Reset user password
-//* @route POST /api/users/resetpassword
+//* @route POST /api/users/forgotpassword
 //* @access Public
-const resetPassword = asyncHandler(async (req, res) => {
+const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
@@ -256,6 +256,35 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
+const resetPassword = asyncHandler(async (req, res) => {
+  const { password } = req.body;
+  const { resetToken } = req.params;
+
+  //* Hash token, then compare to Token in the database
+
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  //* Find token in database
+  const userToken = await Token.findOne({
+    token: hashedToken,
+    expiresAt: { $gt: Date.now() },
+  });
+
+  if (!userToken) {
+    res.status(404);
+    throw new Error('Invalid or expired token');
+  }
+
+  //* Find user and save new password to database
+  const user = await User.findOne({ _id: userToken.userId });
+  user.password = password;
+  await user.save();
+  res.status(200).json({ message: 'Password reset successful. Please login.' });
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -264,5 +293,6 @@ module.exports = {
   getLoginStatus,
   updateUser,
   changePassword,
+  forgotPassword,
   resetPassword,
 };

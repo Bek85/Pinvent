@@ -8,6 +8,7 @@ const {
   getLoginStatus,
   updateUser,
   changePassword,
+  forgotPassword,
   resetPassword,
 } = require('../controllers/userController');
 const {
@@ -30,6 +31,7 @@ router
   .route('/changepassword')
   .patch(protect, changePasswordValidator, runValidation, changePassword);
 
-router.route('/resetpassword').post(resetPassword);
+router.route('/forgotpassword').post(forgotPassword);
+router.route('/resetpassword/:resetToken').put(resetPassword);
 
 module.exports = router;
