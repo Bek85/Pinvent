@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   createProduct,
   getProducts,
+  getProduct,
 } = require('../controllers/productController');
 const { protect } = require('../middleware/authMiddleware');
 const { runValidation } = require('../validations');
@@ -19,5 +20,7 @@ router
     runValidation,
     createProduct
   );
+
+router.route('/:id').get(protect, getProduct);
 
 module.exports = router;
