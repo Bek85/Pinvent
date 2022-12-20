@@ -77,4 +77,23 @@ const getProduct = asyncHandler(async (req, res) => {
   res.status(200).json(product);
 });
 
-module.exports = { createProduct, getProducts, getProduct };
+//* @desc Delete a single product for a particular user
+//* @route DELETE /api/products/:id
+//* @access Private
+const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  // if product doesnt exist
+  if (!product) {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+  // Match product to its user
+  if (product.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error('User not authorized');
+  }
+  await product.remove();
+  res.status(200).json({ message: 'Product deleted' });
+});
+
+module.exports = { createProduct, getProducts, getProduct, deleteProduct };
