@@ -5,6 +5,7 @@ const {
   getProducts,
   getProduct,
   deleteProduct,
+  updateProduct,
 } = require('../controllers/productController');
 const { protect } = require('../middleware/authMiddleware');
 const { runValidation } = require('../validations');
@@ -22,6 +23,10 @@ router
     createProduct
   );
 
-router.route('/:id').get(protect, getProduct).delete(protect, deleteProduct);
+router
+  .route('/:id')
+  .get(protect, getProduct)
+  .delete(protect, deleteProduct)
+  .patch(protect, upload.single('image'), updateProduct);
 
 module.exports = router;

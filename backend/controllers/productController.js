@@ -96,4 +96,17 @@ const deleteProduct = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Product deleted' });
 });
 
-module.exports = { createProduct, getProducts, getProduct, deleteProduct };
+//* @desc Update a single product for a particular user
+//* @route PATCH /api/products/:id
+//* @access Private
+const updateProduct = asyncHandler(async (req, res) => {
+  res.send('product update endpoint');
+});
+
+module.exports = {
+  createProduct,
+  getProducts,
+  getProduct,
+  deleteProduct,
+  updateProduct,
+};
