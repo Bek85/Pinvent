@@ -1,5 +1,5 @@
-import Footer from 'pinvent/footer/Footer';
-import Header from 'pinvent/header/Header';
+import Footer from 'pinvent/components/footer/Footer';
+import Header from 'pinvent/components/header/Header';
 
 export default function Layout({ children }) {
   return (
