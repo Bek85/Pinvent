@@ -1,4 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Home from 'pinvent/pages/home/Home';
 import Login from 'pinvent/pages/auth/Login';
 import Register from 'pinvent/pages/auth/Register';
@@ -7,6 +10,8 @@ import Reset from 'pinvent/pages/auth/Reset';
 import Dashboard from 'pinvent/pages/dashboard/Dashboard';
 import Sidebar from './components/sidebar/Sidebar';
 import Layout from './components/layout/Layout';
+
+axios.defaults.withCredentials = true;
 
 export default function App() {
   return (
@@ -28,6 +33,7 @@ export default function App() {
           }
         />
       </Routes>
+      <ToastContainer />
     </Router>
   );
 }
