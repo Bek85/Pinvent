@@ -2,5 +2,5 @@
 import './spinner.scss';
 
 export default function Spinner() {
-  return <div class='loading'>Loading&#8230;</div>;
+  return <div className='loading'>Loading&#8230;</div>;
 }

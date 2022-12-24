@@ -7,9 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { registerUser } from '../../services/authService';
+import { registerUser } from 'pinvent/services/authService';
 import { SET_NAME, SET_LOGIN } from 'pinvent/redux/features/auth/authSlice';
-import Spinner from '../../components/spinner/Spinner';
+import Spinner from 'pinvent/components/spinner/Spinner';
 
 const schema = yup.object({
   name: yup.string().required('Name is a required field'),

@@ -25,3 +25,22 @@ export const registerUser = async (userCredentials) => {
     toast.error(message);
   }
 };
+export const loginUser = async (userCredentials) => {
+  try {
+    const res = await axios.post(
+      `${BACKEND_URL}/api/users/login`,
+      userCredentials
+    );
+
+    if (res.status === 200) {
+      toast.success('User logged in successfully');
+    }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
