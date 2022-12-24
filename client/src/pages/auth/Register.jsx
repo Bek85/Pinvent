@@ -2,66 +2,50 @@ import styles from './auth.module.scss';
 import { TiUserAddOutline } from 'react-icons/ti';
 import Card from 'pinvent/components/card/Card';
 import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { validateEmail } from 'pinvent/services/authService';
 import { registerUser } from '../../services/authService';
-import {
-  SET_NAME,
-  SET_LOGIN,
-  SAVE_USER,
-} from 'pinvent/redux/features/auth/authSlice';
+import { SET_NAME, SET_LOGIN } from 'pinvent/redux/features/auth/authSlice';
 
-const initialState = {
-  name: '',
-  email: '',
-  password: '',
-  passwordConfirm: '',
-};
+const schema = yup.object({
+  name: yup.string().required('Name is a required field'),
+  email: yup
+    .string()
+    .required('Email is a required field')
+    .email('Email is not valid'),
+  password: yup
+    .string()
+    .required('Password is a required field')
+    .min(6, 'Password must be at least 6 characters'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords do not match'),
+});
 
 export default function Register() {
-  const [formData, setFormData] = useState(initialState);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { name, email, password, passwordConfirm } = formData;
+  const submitUser = async (data) => {
+    const { name, email, password } = data;
+    const userData = { name, email, password };
 
-  const handleInputChange = (evt) => {
-    const { name, value } = evt.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    if (!name || !email || !password) {
-      return toast.error('All fields are required');
-    }
-    if (password !== passwordConfirm) {
-      return toast.error('Passwords do not match');
-    }
-    if (password.length < 6) {
-      return toast.error('Password must be at least 6 characters');
-    }
-    if (!validateEmail(email)) {
-      return toast.error('Please enter a valid email');
-    }
-
-    const userData = {
-      name,
-      email,
-      password,
-    };
-    setIsLoading(true);
     try {
-      const data = await registerUser(userData);
+      const res = await registerUser(userData);
+      await dispatch(SET_NAME(res.name));
       await dispatch(SET_LOGIN(true));
-      await dispatch(SET_NAME(data.name));
-      await dispatch(SAVE_USER(data));
       navigate('/dashboard');
       setIsLoading(false);
     } catch (error) {
@@ -77,36 +61,27 @@ export default function Register() {
             <TiUserAddOutline size={35} color='#999' />
           </div>
           <h2>Register</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(submitUser)}>
+            <input type='text' placeholder='Name' {...register('name')} />
+            <span style={{ color: 'red' }}>{errors.name?.message}</span>
+
+            <input type='email' placeholder='Email' {...register('email')} />
+            <span style={{ color: 'red' }}>{errors.email?.message}</span>
             <input
-              value={name}
-              onChange={handleInputChange}
-              type='text'
-              placeholder='Name'
-              name='name'
-            />
-            <input
-              value={email}
-              onChange={handleInputChange}
-              type='email'
-              placeholder='Email'
-              name='email'
-            />
-            <input
-              value={password}
-              onChange={handleInputChange}
               type='password'
               placeholder='Password'
-              name='password'
+              {...register('password')}
             />
+            <span style={{ color: 'red' }}>{errors.password?.message}</span>
             <input
-              value={passwordConfirm}
-              onChange={handleInputChange}
               type='password'
               placeholder='Confirm password'
-              name='passwordConfirm'
+              {...register('confirmPassword')}
             />
-            <button type='submit' className='--btn --btn-primary --btn-block'>
+            <span style={{ color: 'red' }}>
+              {errors.confirmPassword?.message}
+            </span>
+            <button type='submit' className='--btn --btn-primary --btn-block '>
               Register
             </button>
           </form>
