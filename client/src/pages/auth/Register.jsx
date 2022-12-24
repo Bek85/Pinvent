@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { registerUser } from '../../services/authService';
 import { SET_NAME, SET_LOGIN } from 'pinvent/redux/features/auth/authSlice';
+import Spinner from '../../components/spinner/Spinner';
 
 const schema = yup.object({
   name: yup.string().required('Name is a required field'),
@@ -41,7 +42,7 @@ export default function Register() {
   const submitUser = async (data) => {
     const { name, email, password } = data;
     const userData = { name, email, password };
-
+    setIsLoading(true);
     try {
       const res = await registerUser(userData);
       await dispatch(SET_NAME(res.name));
@@ -55,6 +56,7 @@ export default function Register() {
   };
   return (
     <div className={`container ${styles.auth}`}>
+      {isLoading && <Spinner />}
       <Card>
         <div className={styles.form}>
           <div className='--flex-center'>
