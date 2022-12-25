@@ -63,13 +63,13 @@ export default function Login() {
           <h2>Login</h2>
           <form onSubmit={handleSubmit(submitUserLogin)}>
             <input type='email' placeholder='Email' {...register('email')} />
-            <span style={{ color: 'red' }}>{errors.email?.message}</span>
+            <span className={styles.error}>{errors.email?.message}</span>
             <input
               type='password'
               placeholder='Password'
               {...register('password')}
             />
-            <span style={{ color: 'red' }}>{errors.password?.message}</span>
+            <span className={styles.error}>{errors.password?.message}</span>
             <button type='submit' className='--btn --btn-primary --btn-block'>
               Login
             </button>

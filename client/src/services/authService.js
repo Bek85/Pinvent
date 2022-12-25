@@ -61,9 +61,12 @@ export const logoutUser = async () => {
     toast.error(message);
   }
 };
-export const forgotPassword = async () => {
+export const forgotPassword = async (email) => {
   try {
-    const res = await axios.post(`${BACKEND_URL}/api/users/forgotpassword`);
+    const res = await axios.post(
+      `${BACKEND_URL}/api/users/forgotpassword`,
+      email
+    );
 
     if (res.status === 200) {
       toast.success(res.data.message);

@@ -68,22 +68,22 @@ export default function Register() {
           <h2>Register</h2>
           <form onSubmit={handleSubmit(submitUser)}>
             <input type='text' placeholder='Name' {...register('name')} />
-            <span style={{ color: 'red' }}>{errors.name?.message}</span>
+            <span className={styles.error}>{errors.name?.message}</span>
 
             <input type='email' placeholder='Email' {...register('email')} />
-            <span style={{ color: 'red' }}>{errors.email?.message}</span>
+            <span className={styles.error}>{errors.email?.message}</span>
             <input
               type='password'
               placeholder='Password'
               {...register('password')}
             />
-            <span style={{ color: 'red' }}>{errors.password?.message}</span>
+            <span className={styles.error}>{errors.password?.message}</span>
             <input
               type='password'
               placeholder='Confirm password'
               {...register('confirmPassword')}
             />
-            <span style={{ color: 'red' }}>
+            <span className={styles.error}>
               {errors.confirmPassword?.message}
             </span>
             <button type='submit' className='--btn --btn-primary --btn-block '>
