@@ -1,9 +1,42 @@
 import styles from './auth.module.scss';
 import { MdPassword } from 'react-icons/md';
 import Card from 'pinvent/components/card/Card';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { resetPassword } from 'pinvent/services/authService';
+import { toast } from 'react-toastify';
+
+const schema = yup.object({
+  password: yup
+    .string()
+    .required('Password is a required field')
+    .min(6, 'Password must be at least 6 characters'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords do not match'),
+});
 
 export default function Reset() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const { resetToken } = useParams();
+
+  const passwordResetSubmit = async (data) => {
+    try {
+      const res = await resetPassword(data, resetToken);
+      toast.success(res.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div className={`container ${styles.auth}`}>
       <Card>
@@ -12,19 +45,21 @@ export default function Reset() {
             <MdPassword size={35} color='#999' />
           </div>
           <h2>Reset Password</h2>
-          <form>
+          <form onSubmit={handleSubmit(passwordResetSubmit)}>
             <input
               type='password'
               placeholder='New Password'
-              required
-              name='password'
+              {...register('password')}
             />
+            <span className={styles.error}>{errors.password?.message}</span>
             <input
               type='password'
               placeholder='Confirm New Password'
-              required
-              name='password'
+              {...register('confirmPassword')}
             />
+            <span className={styles.error}>
+              {errors.confirmPassword?.message}
+            </span>
 
             <button type='submit' className='--btn --btn-primary --btn-block'>
               Reset Password

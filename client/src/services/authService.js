@@ -80,3 +80,18 @@ export const forgotPassword = async (email) => {
     toast.error(message);
   }
 };
+export const resetPassword = async (userData, resetToken) => {
+  try {
+    const res = await axios.put(
+      `${BACKEND_URL}/api/users/resetpassword/${resetToken}`,
+      userData
+    );
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
