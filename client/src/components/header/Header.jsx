@@ -1,6 +1,9 @@
 import { logoutUser } from 'pinvent/services/authService';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_LOGIN, SET_NAME } from 'pinvent/redux/features/auth/authSlice';
+import {
+  setLoggedInStatus,
+  setUserName,
+} from 'pinvent/redux/features/auth/authSlice';
 import { useNavigate } from 'react-router';
 
 export default function Header() {
@@ -10,8 +13,8 @@ export default function Header() {
   const navigate = useNavigate();
   const logout = async () => {
     await logoutUser();
-    await dispatch(SET_LOGIN(false));
-    await dispatch(SET_NAME(''));
+    await dispatch(setLoggedInStatus(false));
+    await dispatch(setUserName(''));
     navigate('/');
   };
   return (

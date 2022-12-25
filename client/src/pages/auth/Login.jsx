@@ -7,7 +7,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
 import { loginUser } from 'pinvent/services/authService';
-import { SET_LOGIN, SET_NAME } from 'pinvent/redux/features/auth/authSlice';
+import {
+  setLoggedInStatus,
+  setUserName,
+} from 'pinvent/redux/features/auth/authSlice';
 import Spinner from 'pinvent/components/spinner/Spinner';
 import { useState } from 'react';
 
@@ -40,8 +43,8 @@ export default function Login() {
     setIsLoading(true);
     try {
       const res = await loginUser(userData);
-      await dispatch(SET_LOGIN(true));
-      await dispatch(SET_NAME(res.name));
+      await dispatch(setLoggedInStatus(true));
+      await dispatch(setUserName(res.name));
       navigate('/dashboard');
       setIsLoading(false);
     } catch (error) {

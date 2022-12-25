@@ -8,7 +8,10 @@ import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { registerUser } from 'pinvent/services/authService';
-import { SET_NAME, SET_LOGIN } from 'pinvent/redux/features/auth/authSlice';
+import {
+  setLoggedInStatus,
+  setUserName,
+} from 'pinvent/redux/features/auth/authSlice';
 import Spinner from 'pinvent/components/spinner/Spinner';
 
 const schema = yup.object({
@@ -45,8 +48,8 @@ export default function Register() {
     setIsLoading(true);
     try {
       const res = await registerUser(userData);
-      await dispatch(SET_NAME(res.name));
-      await dispatch(SET_LOGIN(true));
+      await dispatch(setUserName(res.name));
+      await dispatch(setLoggedInStatus(true));
       navigate('/dashboard');
       setIsLoading(false);
     } catch (error) {
