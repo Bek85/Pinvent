@@ -1,5 +1,3 @@
-import Spinner from '../../components/spinner/Spinner';
-
 export default function Dashboard() {
   return (
     <div>
