@@ -3,12 +3,6 @@ import { toast } from 'react-toastify';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export const validateEmail = (email) => {
-  return email.match(
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  );
-};
-
 export const registerUser = async (userCredentials) => {
   try {
     const res = await axios.post(
@@ -22,6 +16,76 @@ export const registerUser = async (userCredentials) => {
     if (res.status === 201) {
       toast.success('User registered successfully');
     }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+export const loginUser = async (userCredentials) => {
+  try {
+    const res = await axios.post(
+      `${BACKEND_URL}/api/users/login`,
+      userCredentials
+    );
+
+    if (res.status === 200) {
+      toast.success('User logged in successfully');
+    }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    const res = await axios.get(`${BACKEND_URL}/api/users/logout`);
+
+    if (res.status === 200) {
+      toast.success('User logged out successfully');
+    }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+export const forgotPassword = async (email) => {
+  try {
+    const res = await axios.post(
+      `${BACKEND_URL}/api/users/forgotpassword`,
+      email
+    );
+
+    if (res.status === 200) {
+      toast.success(res.data.message);
+    }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+export const resetPassword = async (userData, resetToken) => {
+  try {
+    const res = await axios.put(
+      `${BACKEND_URL}/api/users/resetpassword/${resetToken}`,
+      userData
+    );
     return res.data;
   } catch (error) {
     const message =

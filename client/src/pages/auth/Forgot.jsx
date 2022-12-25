@@ -2,8 +2,30 @@ import styles from './auth.module.scss';
 import { AiOutlineMail } from 'react-icons/ai';
 import Card from 'pinvent/components/card/Card';
 import { Link } from 'react-router-dom';
+import { forgotPassword } from 'pinvent/services/authService';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup.object({
+  email: yup
+    .string()
+    .required('Email is a required field')
+    .email('Email is not valid'),
+});
 
 export default function Forgot() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const forgotPasswordSubmit = async (data) => {
+    await forgotPassword(data);
+  };
   return (
     <div className={`container ${styles.auth}`}>
       <Card>
@@ -12,8 +34,9 @@ export default function Forgot() {
             <AiOutlineMail size={35} color='#999' />
           </div>
           <h2>Forgot Password</h2>
-          <form>
-            <input type='text' placeholder='Email' required name='email' />
+          <form onSubmit={handleSubmit(forgotPasswordSubmit)}>
+            <input type='email' placeholder='Email' {...register('email')} />
+            <span className={styles.error}>{errors.email?.message}</span>
 
             <button type='submit' className='--btn --btn-primary --btn-block'>
               Get Reset Email

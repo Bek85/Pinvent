@@ -7,8 +7,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { registerUser } from '../../services/authService';
-import { SET_NAME, SET_LOGIN } from 'pinvent/redux/features/auth/authSlice';
+import { registerUser } from 'pinvent/services/authService';
+import {
+  setLoggedInStatus,
+  setUserName,
+} from 'pinvent/redux/features/auth/authSlice';
+import Spinner from 'pinvent/components/spinner/Spinner';
 
 const schema = yup.object({
   name: yup.string().required('Name is a required field'),
@@ -41,11 +45,11 @@ export default function Register() {
   const submitUser = async (data) => {
     const { name, email, password } = data;
     const userData = { name, email, password };
-
+    setIsLoading(true);
     try {
       const res = await registerUser(userData);
-      await dispatch(SET_NAME(res.name));
-      await dispatch(SET_LOGIN(true));
+      await dispatch(setUserName(res.name));
+      await dispatch(setLoggedInStatus(true));
       navigate('/dashboard');
       setIsLoading(false);
     } catch (error) {
@@ -55,6 +59,7 @@ export default function Register() {
   };
   return (
     <div className={`container ${styles.auth}`}>
+      {isLoading && <Spinner />}
       <Card>
         <div className={styles.form}>
           <div className='--flex-center'>
@@ -63,22 +68,22 @@ export default function Register() {
           <h2>Register</h2>
           <form onSubmit={handleSubmit(submitUser)}>
             <input type='text' placeholder='Name' {...register('name')} />
-            <span style={{ color: 'red' }}>{errors.name?.message}</span>
+            <span className={styles.error}>{errors.name?.message}</span>
 
             <input type='email' placeholder='Email' {...register('email')} />
-            <span style={{ color: 'red' }}>{errors.email?.message}</span>
+            <span className={styles.error}>{errors.email?.message}</span>
             <input
               type='password'
               placeholder='Password'
               {...register('password')}
             />
-            <span style={{ color: 'red' }}>{errors.password?.message}</span>
+            <span className={styles.error}>{errors.password?.message}</span>
             <input
               type='password'
               placeholder='Confirm password'
               {...register('confirmPassword')}
             />
-            <span style={{ color: 'red' }}>
+            <span className={styles.error}>
               {errors.confirmPassword?.message}
             </span>
             <button type='submit' className='--btn --btn-primary --btn-block '>
