@@ -44,3 +44,20 @@ export const loginUser = async (userCredentials) => {
     toast.error(message);
   }
 };
+
+export const logoutUser = async () => {
+  try {
+    const res = await axios.get(`${BACKEND_URL}/api/users/logout`);
+
+    if (res.status === 200) {
+      toast.success('User logged out successfully');
+    }
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
