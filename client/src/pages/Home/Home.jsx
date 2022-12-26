@@ -1,7 +1,10 @@
 import './Home.scss';
 import { RiProductHuntLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 export default function Home() {
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
   return (
     <div className='home'>
       <nav className='container --flex-between'>
@@ -9,19 +12,26 @@ export default function Home() {
           <RiProductHuntLine size={35} />
         </div>
         <ul className='home-links'>
-          <li>
-            <Link to='/register'>Register</Link>
-          </li>
-          <li>
-            <button className='--btn --btn-primary'>
-              <Link to='/login'>Login</Link>
-            </button>
-          </li>
-          <li>
-            <button className='--btn --btn-primary'>
-              <Link to='/dashboard'>Dashboard</Link>
-            </button>
-          </li>
+          {!isLoggedIn && (
+            <>
+              <li>
+                <Link to='/register'>Register</Link>
+              </li>
+
+              <li>
+                <button className='--btn --btn-primary'>
+                  <Link to='/login'>Login</Link>
+                </button>
+              </li>
+            </>
+          )}
+          {isLoggedIn && (
+            <li>
+              <button className='--btn --btn-primary'>
+                <Link to='/dashboard'>Dashboard</Link>
+              </button>
+            </li>
+          )}
         </ul>
       </nav>
       <section className='container hero'>
