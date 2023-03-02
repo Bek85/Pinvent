@@ -13,7 +13,8 @@ import Layout from 'pinvent/components/layout/Layout';
 import AddProduct from 'pinvent/pages/addProduct/AddProduct';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getLoginStatus } from 'pinvent/services/authService';
+// import { getLoginStatus } from 'pinvent/services/authService';
+import { getLoginStatus } from './api/authApi';
 import { setLoggedInStatus } from 'pinvent/redux/features/auth/authSlice';
 
 axios.defaults.withCredentials = true;
@@ -23,7 +24,7 @@ export default function App() {
   useEffect(() => {
     async function loginStatus() {
       const status = await getLoginStatus();
-      dispatch(setLoggedInStatus(status));
+      dispatch(setLoggedInStatus(status.data));
     }
     loginStatus();
   }, [dispatch]);

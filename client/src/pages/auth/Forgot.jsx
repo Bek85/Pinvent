@@ -2,10 +2,13 @@ import styles from './auth.module.scss';
 import { AiOutlineMail } from 'react-icons/ai';
 import Card from 'pinvent/components/card/Card';
 import { Link } from 'react-router-dom';
-import { forgotPassword } from 'pinvent/services/authService';
+// import { forgotPassword } from 'pinvent/services/authService';
+
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { forgotPassword } from 'pinvent/api/authApi';
+import { toast } from 'react-toastify';
 
 const schema = yup.object({
   email: yup
@@ -24,7 +27,12 @@ export default function Forgot() {
   });
 
   const forgotPasswordSubmit = async (data) => {
-    await forgotPassword(data);
+    try {
+      const res = await forgotPassword(data);
+      toast.success(`${res.data.message}`);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   return (
     <div className={`container ${styles.auth}`}>

@@ -1,12 +1,13 @@
 import styles from './auth.module.scss';
 import { MdPassword } from 'react-icons/md';
 import Card from 'pinvent/components/card/Card';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { resetPassword } from 'pinvent/services/authService';
+// import { resetPassword } from 'pinvent/services/authService';
 import { toast } from 'react-toastify';
+import { resetPassword } from 'pinvent/api/authApi';
 
 const schema = yup.object({
   password: yup
@@ -19,6 +20,7 @@ const schema = yup.object({
 });
 
 export default function Reset() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,7 +34,8 @@ export default function Reset() {
   const passwordResetSubmit = async (data) => {
     try {
       const res = await resetPassword(data, resetToken);
-      toast.success(res.message);
+      toast.success(res.data.message);
+      navigate('/login');
     } catch (error) {
       toast.error(error.message);
     }

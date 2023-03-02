@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 const PRODUCT_ENDPOINT = `${BACKEND_URL}/api/products`;
 
 //* Create a new product

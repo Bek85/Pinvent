@@ -7,7 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { registerUser } from 'pinvent/services/authService';
+
+import { registerUser } from 'pinvent/api/authApi';
 import {
   setLoggedInStatus,
   setUserName,
@@ -48,6 +49,7 @@ export default function Register() {
     setIsLoading(true);
     try {
       const res = await registerUser(userData);
+
       await dispatch(setUserName(res.name));
       await dispatch(setLoggedInStatus(true));
       navigate('/dashboard');

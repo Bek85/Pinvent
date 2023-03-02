@@ -6,13 +6,14 @@ import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
-import { loginUser } from 'pinvent/services/authService';
 import {
   setLoggedInStatus,
   setUserName,
 } from 'pinvent/redux/features/auth/authSlice';
 import Spinner from 'pinvent/components/spinner/Spinner';
 import { useState } from 'react';
+import { loginUser } from 'pinvent/api/authApi';
+import { toast } from 'react-toastify';
 
 const schema = yup.object({
   email: yup
@@ -43,12 +44,15 @@ export default function Login() {
     setIsLoading(true);
     try {
       const res = await loginUser(userData);
+
       await dispatch(setLoggedInStatus(true));
-      await dispatch(setUserName(res.name));
+      await dispatch(setUserName(res.data.name));
+      toast.success(`${res.data.name} logged in successfully`);
       navigate('/dashboard');
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      toast.error(error.response.data.message);
     }
   };
   return (
