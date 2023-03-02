@@ -31,7 +31,7 @@ export default function Forgot() {
       const res = await forgotPassword(data);
       toast.success(`${res.data.message}`);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
   return (

@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { registerUser } from 'pinvent/api/authApi';
 import {
@@ -56,7 +57,7 @@ export default function Register() {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
   return (

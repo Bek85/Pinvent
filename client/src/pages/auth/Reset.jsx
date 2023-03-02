@@ -37,7 +37,7 @@ export default function Reset() {
       toast.success(res.data.message);
       navigate('/login');
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
   return (
