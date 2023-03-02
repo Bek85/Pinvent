@@ -10,6 +10,7 @@ import Reset from 'pinvent/pages/auth/Reset';
 import Dashboard from 'pinvent/pages/dashboard/Dashboard';
 import Sidebar from './components/sidebar/Sidebar';
 import Layout from './components/layout/Layout';
+import AddProduct from './pages/addProduct/AddProduct';
 
 axios.defaults.withCredentials = true;
 
@@ -28,6 +29,16 @@ export default function App() {
             <Sidebar>
               <Layout>
                 <Dashboard />
+              </Layout>
+            </Sidebar>
+          }
+        />
+        <Route
+          path='/add-product'
+          element={
+            <Sidebar>
+              <Layout>
+                <AddProduct />
               </Layout>
             </Sidebar>
           }
