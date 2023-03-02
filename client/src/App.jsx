@@ -8,13 +8,26 @@ import Register from 'pinvent/pages/auth/Register';
 import Forgot from 'pinvent/pages/auth/Forgot';
 import Reset from 'pinvent/pages/auth/Reset';
 import Dashboard from 'pinvent/pages/dashboard/Dashboard';
-import Sidebar from './components/sidebar/Sidebar';
-import Layout from './components/layout/Layout';
-import AddProduct from './pages/addProduct/AddProduct';
+import Sidebar from 'pinvent/components/sidebar/Sidebar';
+import Layout from 'pinvent/components/layout/Layout';
+import AddProduct from 'pinvent/pages/addProduct/AddProduct';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getLoginStatus } from 'pinvent/services/authService';
+import { setLoggedInStatus } from 'pinvent/redux/features/auth/authSlice';
 
 axios.defaults.withCredentials = true;
 
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    async function loginStatus() {
+      const status = await getLoginStatus();
+      dispatch(setLoggedInStatus(status));
+    }
+    loginStatus();
+  }, [dispatch]);
+
   return (
     <Router>
       <Routes>
