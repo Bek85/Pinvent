@@ -2,8 +2,6 @@ import axios from 'axios';
 
 const DEV_BACKEND_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 
-console.log(import.meta.env.VITE_APP_DEBUG_API);
-
 const axiosParams = {
   baseURL: import.meta.env.NODE_ENV === 'development' ? DEV_BACKEND_URL : '/',
 };

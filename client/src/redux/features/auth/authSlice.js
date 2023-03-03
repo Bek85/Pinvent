@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const name = JSON.parse(localStorage.getItem('name'));
 
 const initialState = {
-  // isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn')) || false,
+  isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn')) || false,
   name: name || '',
   user: {
     name: '',
