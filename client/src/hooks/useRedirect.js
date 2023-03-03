@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoggedInStatus } from 'pinvent/redux/features/auth/authSlice';
+import { setLoggedInStatus } from '@/redux/features/auth/authSlice';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 

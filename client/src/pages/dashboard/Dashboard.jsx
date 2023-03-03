@@ -1,4 +1,4 @@
-import useRedirectLoggedOutUser from 'pinvent/hooks/useRedirect';
+import useRedirectLoggedOutUser from '@/hooks/useRedirect';
 
 export default function Dashboard() {
   useRedirectLoggedOutUser('/login');

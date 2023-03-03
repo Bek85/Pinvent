@@ -1,20 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Home from 'pinvent/pages/home/Home';
-import Login from 'pinvent/pages/auth/Login';
-import Register from 'pinvent/pages/auth/Register';
-import Forgot from 'pinvent/pages/auth/Forgot';
-import Reset from 'pinvent/pages/auth/Reset';
-import Dashboard from 'pinvent/pages/dashboard/Dashboard';
-import Sidebar from 'pinvent/components/sidebar/Sidebar';
-import Layout from 'pinvent/components/layout/Layout';
-import AddProduct from 'pinvent/pages/addProduct/AddProduct';
+import Home from '@/pages/home/Home';
+import Login from '@/pages/auth/Login';
+import Register from '@/pages/auth/Register';
+import Forgot from '@/pages/auth/Forgot';
+import Reset from '@/pages/auth/Reset';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import Sidebar from '@/components/sidebar/Sidebar';
+import Layout from '@/components/layout/Layout';
+import AddProduct from '@/pages/addProduct/AddProduct';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getLoginStatus } from './api/authApi';
-import { setLoggedInStatus } from 'pinvent/redux/features/auth/authSlice';
+import { getLoginStatus } from '@/api/authApi';
+import { setLoggedInStatus } from '@/redux/features/auth/authSlice';
 
 export default function App() {
   const dispatch = useDispatch();

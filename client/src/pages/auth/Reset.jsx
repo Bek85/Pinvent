@@ -1,13 +1,12 @@
 import styles from './auth.module.scss';
 import { MdPassword } from 'react-icons/md';
-import Card from 'pinvent/components/card/Card';
+import Card from '@/components/card/Card';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// import { resetPassword } from 'pinvent/services/authService';
 import { toast } from 'react-toastify';
-import { resetPassword } from 'pinvent/api/authApi';
+import { resetPassword } from '@/api/authApi';
 
 const schema = yup.object({
   password: yup

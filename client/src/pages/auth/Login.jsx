@@ -1,6 +1,6 @@
 import styles from './auth.module.scss';
 import { BiLogIn } from 'react-icons/bi';
-import Card from 'pinvent/components/card/Card';
+import Card from '@/components/card/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -9,13 +9,13 @@ import { useDispatch } from 'react-redux';
 import {
   setLoggedInStatus,
   setUserName,
-} from 'pinvent/redux/features/auth/authSlice';
-import Spinner from 'pinvent/components/spinner/Spinner';
+} from '@/redux/features/auth/authSlice';
+import Spinner from '@/components/spinner/Spinner';
 import { useState } from 'react';
-import { loginUser } from 'pinvent/api/authApi';
+import { loginUser } from '@/api/authApi';
 import { toast } from 'react-toastify';
 
-const schema = yup.object({
+const loginSchema = yup.object({
   email: yup
     .string()
     .required('Email is a required field')
@@ -35,7 +35,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(loginSchema),
   });
 
   const submitUserLogin = async (data) => {

@@ -1,6 +1,6 @@
 import styles from './auth.module.scss';
 import { TiUserAddOutline } from 'react-icons/ti';
-import Card from 'pinvent/components/card/Card';
+import Card from '@/components/card/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,12 +9,12 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { registerUser } from 'pinvent/api/authApi';
+import { registerUser } from '@/api/authApi';
 import {
   setLoggedInStatus,
   setUserName,
-} from 'pinvent/redux/features/auth/authSlice';
-import Spinner from 'pinvent/components/spinner/Spinner';
+} from '@/redux/features/auth/authSlice';
+import Spinner from '@/components/spinner/Spinner';
 
 const schema = yup.object({
   name: yup.string().required('Name is a required field'),

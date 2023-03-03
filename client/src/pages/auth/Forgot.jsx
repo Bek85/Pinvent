@@ -1,13 +1,13 @@
 import styles from './auth.module.scss';
 import { AiOutlineMail } from 'react-icons/ai';
-import Card from 'pinvent/components/card/Card';
+import Card from '@/components/card/Card';
 import { Link } from 'react-router-dom';
-// import { forgotPassword } from 'pinvent/services/authService';
+// import { forgotPassword } from '@/services/authService';
 
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { forgotPassword } from 'pinvent/api/authApi';
+import { forgotPassword } from '@/api/authApi';
 import { toast } from 'react-toastify';
 
 const schema = yup.object({

@@ -1,12 +1,12 @@
-// import { logoutUser } from 'pinvent/services/authService';
+// import { logoutUser } from '@/services/authService';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setLoggedInStatus,
   setUserName,
-} from 'pinvent/redux/features/auth/authSlice';
+} from '@/redux/features/auth/authSlice';
 import { useNavigate } from 'react-router';
-import { logoutUser } from 'pinvent/api/authApi';
+import { logoutUser } from '@/api/authApi';
 import { toast } from 'react-toastify';
 
 export default function Header() {

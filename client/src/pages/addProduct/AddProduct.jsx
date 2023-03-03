@@ -1,4 +1,4 @@
-import ProductForm from 'pinvent/components/product/productForm/ProductForm';
+import ProductForm from '@/components/product/productForm/ProductForm';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 

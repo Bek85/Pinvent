@@ -1,34 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { createProduct } from './productThunk';
+import { IDLE, PENDING, SUCCESS, ERROR } from '../constants/apiStatus';
 import { toast } from 'react-toastify';
-import productService from './productService';
 
 const initialState = {
   product: null,
   products: [],
-  isError: false,
-  isSuccess: false,
-  isLoading: false,
+  createProductStatus: IDLE,
   message: '',
 };
-
-// Create new product
-const createNewProduct = createAsyncThunk(
-  'products/create',
-  async (formData, thunkAPI) => {
-    try {
-      return await productService.createProduct(formData);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      console.log(message);
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
 
 const productSlice = createSlice({
   name: 'product',
@@ -40,19 +20,16 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createNewProduct.pending, (state) => {
-        state.isLoading = true;
+      .addCase(createProduct.pending, (state) => {
+        state.createProductStatus = PENDING;
       })
-      .addCase(createNewProduct.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.createProductStatus = SUCCESS;
         state.products.push(action.payload);
-        toast.success('Product added succesfully');
-        console.log(action.payload);
+        toast.success('Product added successfully');
       })
-      .addCase(createNewProduct.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
+      .addCase(createProduct.rejected, (state, action) => {
+        state.createProductStatus = ERROR;
         state.message = action.payload;
         toast.error(action.payload);
       });

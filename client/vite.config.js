@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   return {
     resolve: {
       alias: {
-        pinvent: path.resolve(__dirname, './src'),
+        '@': path.resolve(__dirname, './src'),
       },
     },
     server: {
