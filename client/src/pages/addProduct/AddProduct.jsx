@@ -1,8 +1,8 @@
 import ProductForm from '@/components/product/productForm/ProductForm';
+import { useAppSelector } from '@/redux/hook';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
-const initialState = {
+const productProps = {
   name: '',
   category: '',
   qty: '',
@@ -10,12 +10,12 @@ const initialState = {
 };
 
 export default function AddProduct() {
-  const [product, setProduct] = useState(initialState);
+  const [product, setProduct] = useState(productProps);
   const [productImage, setProductImage] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const [description, setDescription] = useState('');
 
-  const { isLoading } = useSelector((state) => state.product);
+  const { createProductStatus } = useAppSelector((state) => state.product);
 
   const { name, category, qty, price } = product;
 
