@@ -9,7 +9,6 @@ const { fileSizeFormatter } = require('../utils/formatFileSize');
 const createProduct = asyncHandler(async (req, res) => {
   const { name, sku, category, qty, price, description } = req.body;
   const user = req.user;
-  console.log(req.files);
 
   //* Handle image upload
 
