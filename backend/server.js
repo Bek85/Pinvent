@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const colors = require('colors');
 const path = require('path');
 const connectDB = require('./config/connectDB');
@@ -19,9 +20,10 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(
   cors({
-    origin: ['http://localhost:5173'],
+    origin: true,
     credentials: true,
   })
 );

@@ -1,6 +1,7 @@
-import Spinner from '../../components/spinner/Spinner';
+import useRedirectLoggedOutUser from '@/hooks/useRedirect';
 
 export default function Dashboard() {
+  useRedirectLoggedOutUser('/login');
   return (
     <div>
       <h2>Dashboard</h2>

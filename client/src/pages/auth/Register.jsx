@@ -1,18 +1,20 @@
 import styles from './auth.module.scss';
 import { TiUserAddOutline } from 'react-icons/ti';
-import Card from 'pinvent/components/card/Card';
+import Card from '@/components/card/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { registerUser } from 'pinvent/services/authService';
+import { toast } from 'react-toastify';
+
+import { registerUser } from '@/api/authApi';
 import {
   setLoggedInStatus,
   setUserName,
-} from 'pinvent/redux/features/auth/authSlice';
-import Spinner from 'pinvent/components/spinner/Spinner';
+} from '@/redux/features/auth/authSlice';
+import Spinner from '@/components/spinner/Spinner';
 
 const schema = yup.object({
   name: yup.string().required('Name is a required field'),
@@ -48,13 +50,14 @@ export default function Register() {
     setIsLoading(true);
     try {
       const res = await registerUser(userData);
+
       await dispatch(setUserName(res.name));
       await dispatch(setLoggedInStatus(true));
       navigate('/dashboard');
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
   return (

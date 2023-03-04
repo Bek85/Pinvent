@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 
 export const registerUser = async (userCredentials) => {
   try {
@@ -27,10 +27,7 @@ export const registerUser = async (userCredentials) => {
 };
 export const loginUser = async (userCredentials) => {
   try {
-    const res = await axios.post(
-      `${BACKEND_URL}/api/users/login`,
-      userCredentials
-    );
+    const res = await axios.post(`${BACKEND_URL}/users/login`, userCredentials);
 
     if (res.status === 200) {
       toast.success('User logged in successfully');
@@ -47,7 +44,7 @@ export const loginUser = async (userCredentials) => {
 
 export const logoutUser = async () => {
   try {
-    const res = await axios.get(`${BACKEND_URL}/api/users/logout`);
+    const res = await axios.get(`${BACKEND_URL}/users/logout`);
 
     if (res.status === 200) {
       toast.success('User logged out successfully');
@@ -63,10 +60,7 @@ export const logoutUser = async () => {
 };
 export const forgotPassword = async (email) => {
   try {
-    const res = await axios.post(
-      `${BACKEND_URL}/api/users/forgotpassword`,
-      email
-    );
+    const res = await axios.post(`${BACKEND_URL}/users/forgotpassword`, email);
 
     if (res.status === 200) {
       toast.success(res.data.message);
@@ -83,9 +77,22 @@ export const forgotPassword = async (email) => {
 export const resetPassword = async (userData, resetToken) => {
   try {
     const res = await axios.put(
-      `${BACKEND_URL}/api/users/resetpassword/${resetToken}`,
+      `${BACKEND_URL}/users/resetpassword/${resetToken}`,
       userData
     );
+    return res.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+export const getLoginStatus = async () => {
+  try {
+    const res = await axios.get(`${BACKEND_URL}/api/users/loggedin`);
     return res.data;
   } catch (error) {
     const message =

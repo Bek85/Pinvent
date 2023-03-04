@@ -1,8 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from 'pinvent/redux/features//auth//authSlice';
+import {
+  useDispatch as useAppDispatch,
+  useSelector as useAppSelector,
+} from 'react-redux';
+import authReducer from '@/redux/features/auth/authSlice';
+import productReducer from '@/redux/features/product/productSlice';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     auth: authReducer,
+    product: productReducer,
   },
 });
+
+const { dispatch } = store;
+
+const useSelector = useAppSelector;
+
+const useDispatch = () => useAppDispatch();
+
+export { store, dispatch, useSelector, useDispatch };
