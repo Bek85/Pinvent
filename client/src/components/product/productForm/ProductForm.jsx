@@ -65,24 +65,22 @@ export default function ProductForm({ isEdit = false, product }) {
 
   const onSubmit = async (data) => {
     const sku = generateKSKU(product.category);
+    const file = getValues('image');
     data.sku = sku;
-    console.log(data);
+    data.image = file;
 
-    // let formData = new FormData();
-    // Object.keys(data).forEach((fieldName) => {
-    //   formData.append(fieldName, data[fieldName]);
-    // });
+    let formData = new FormData();
+    Object.keys(data).forEach((fieldName) => {
+      formData.append(fieldName, data[fieldName]);
+    });
 
-    await dispatch(createProduct(data));
+    await dispatch(createProduct(formData));
   };
 
   const onFileChange = (evt) => {
     const file = evt.target.files[0];
-    console.log(file);
-
     const newFile = URL.createObjectURL(file);
     setImagePreview(newFile);
-    console.log(newFile);
 
     if (file) {
       setValue('image', file, { shouldValidate: true });

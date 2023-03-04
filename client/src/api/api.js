@@ -6,7 +6,7 @@ const axiosParams = {
   baseURL: import.meta.env.NODE_ENV === 'development' ? DEV_BACKEND_URL : '/',
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
+    'Content-Type': 'multipart/form-data',
     Cache: 'no-cache',
   },
   withCredentials: true,
