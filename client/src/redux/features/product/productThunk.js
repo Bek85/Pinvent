@@ -6,7 +6,8 @@ export const createProduct = createAsyncThunk(
   'product/create',
   async (formData, thunkAPI) => {
     try {
-      return await productApi.createProduct(formData);
+      const res = await productApi.createProduct(formData);
+      return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
     }

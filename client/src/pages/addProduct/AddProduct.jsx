@@ -1,28 +1,27 @@
 import ProductForm from '@/components/product/productForm/ProductForm';
-import { useAppSelector } from '@/redux/hook';
+import Spinner from '@/components/spinner/Spinner';
+import { useSelector } from '@/redux/store';
 import { useState } from 'react';
 
 const productProps = {
+  image: '',
   name: '',
   category: '',
   qty: '',
   price: '',
+  description: '',
 };
 
 export default function AddProduct() {
   const [product, setProduct] = useState(productProps);
-  const [productImage, setProductImage] = useState('');
-  const [imagePreview, setImagePreview] = useState(null);
-  const [description, setDescription] = useState('');
 
-  const { createProductStatus } = useAppSelector((state) => state.product);
-
-  const { name, category, qty, price } = product;
+  const { createProductStatus } = useSelector((state) => state.product);
 
   return (
     <div>
+      {createProductStatus === 'PENDING' && <Spinner />}
       <h3 className='--mt'>Add New Product</h3>
-      <ProductForm />
+      <ProductForm product={product} />
     </div>
   );
 }

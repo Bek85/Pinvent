@@ -4,10 +4,15 @@ const DEV_BACKEND_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 
 const axiosParams = {
   baseURL: import.meta.env.NODE_ENV === 'development' ? DEV_BACKEND_URL : '/',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Cache: 'no-cache',
+  },
+  withCredentials: true,
 };
 
 const axiosInstance = axios.create(axiosParams);
-axiosInstance.defaults.withCredentials = true;
 
 const withLogger = async (promise) =>
   promise.catch((error) => {
