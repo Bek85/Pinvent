@@ -4,11 +4,6 @@ const DEV_BACKEND_URL = import.meta.env.VITE_BACKEND_URL_DEV;
 
 const axiosParams = {
   baseURL: import.meta.env.NODE_ENV === 'development' ? DEV_BACKEND_URL : '/',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'multipart/form-data',
-    Cache: 'no-cache',
-  },
   withCredentials: true,
 };
 
