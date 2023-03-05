@@ -1,4 +1,4 @@
-import ProductForm from '@/components/product/productForm/ProductForm';
+import ProductForm from '@/components/product/product-form/ProductForm';
 import Spinner from '@/components/spinner/Spinner';
 import { useSelector } from '@/redux/store';
 import { useState } from 'react';
