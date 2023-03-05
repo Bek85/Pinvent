@@ -2,8 +2,11 @@ import './ProductList.scss';
 import truncate from '@/utils/truncate';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { AiOutlineEye } from 'react-icons/ai';
+import Search from '@/components/search/Search';
+import { useState } from 'react';
 
 export default function ProductList({ products }) {
+  const [search, setSearch] = useState('');
   return (
     <div className='product-list'>
       <hr />
@@ -12,7 +15,7 @@ export default function ProductList({ products }) {
           <span>
             <h3>Inventory Items</h3>
           </span>
-          <span>Search component goes here..</span>
+          <Search value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
         <div className='table'>
           {products.length === 0 && (
