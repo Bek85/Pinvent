@@ -1,4 +1,6 @@
 import './ProductList.scss';
+import ReactPaginate from 'react-paginate';
+import { Link } from 'react-router-dom';
 import truncate from '@/utils/truncate';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { AiOutlineEye } from 'react-icons/ai';
@@ -14,6 +16,25 @@ export default function ProductList({ products }) {
   useEffect(() => {
     dispatch(filterProducts({ products, search }));
   }, [search, products, dispatch]);
+
+  //   Begin Pagination
+  const [currentItems, setCurrentItems] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+
+    setCurrentItems(filteredProducts.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(filteredProducts.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, filteredProducts]);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % filteredProducts.length;
+    setItemOffset(newOffset);
+  };
+  //   End Pagination
 
   return (
     <div className='product-list'>
@@ -42,7 +63,7 @@ export default function ProductList({ products }) {
               </tr>
             </thead>
             <tbody>
-              {filteredProducts.map((product, idx) => {
+              {currentItems.map((product, idx) => {
                 const { _id, name, category, price, qty } = product;
                 return (
                   <tr key={_id}>
@@ -63,6 +84,20 @@ export default function ProductList({ products }) {
             </tbody>
           </table>
         </div>
+        <ReactPaginate
+          breakLabel='...'
+          nextLabel='Next'
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          pageCount={pageCount}
+          previousLabel='Prev'
+          renderOnZeroPageCount={null}
+          containerClassName='pagination'
+          pageLinkClassName='page-num'
+          previousLinkClassName='page-num'
+          nextLinkClassName='page-num'
+          activeLinkClassName='activePage'
+        />
       </div>
     </div>
   );
