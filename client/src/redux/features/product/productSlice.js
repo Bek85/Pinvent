@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createProduct } from './productThunk';
+import { fetchProducts, createProduct } from './productThunk';
 import { IDLE, PENDING, SUCCESS, ERROR } from '../constants/apiStatus';
 import { toast } from 'react-toastify';
 
 const initialState = {
   product: null,
   products: [],
+  fetchProductsStatus: IDLE,
   createProductStatus: IDLE,
   message: '',
 };
@@ -20,6 +21,19 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.fetchProductsStatus = PENDING;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.fetchProductsStatus = SUCCESS;
+        state.products = action.payload;
+        toast.success('Products fetched successfully');
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.fetchProductsStatus = ERROR;
+        state.message = action.payload;
+        toast.error(action.payload);
+      })
       .addCase(createProduct.pending, (state) => {
         state.createProductStatus = PENDING;
       })

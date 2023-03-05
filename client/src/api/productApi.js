@@ -1,7 +1,12 @@
 import api from './api';
 
 const URLS = {
+  fetchProductsUrl: 'api/products',
   createProductUrl: 'api/products',
+};
+
+const fetchProducts = () => {
+  return api.get(URLS.fetchProductsUrl);
 };
 
 const createProduct = (formData) => {
@@ -16,6 +21,7 @@ const createProduct = (formData) => {
 
 const productApi = {
   createProduct,
+  fetchProducts,
 };
 
 export default productApi;
