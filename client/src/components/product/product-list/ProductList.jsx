@@ -3,10 +3,18 @@ import truncate from '@/utils/truncate';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { AiOutlineEye } from 'react-icons/ai';
 import Search from '@/components/search/Search';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, dispatch } from '@/redux/store';
+import { filterProducts } from '@/redux/features/product/productSlice';
 
 export default function ProductList({ products }) {
   const [search, setSearch] = useState('');
+  const { filteredProducts } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    dispatch(filterProducts({ products, search }));
+  }, [search, products, dispatch]);
+
   return (
     <div className='product-list'>
       <hr />
@@ -34,7 +42,7 @@ export default function ProductList({ products }) {
               </tr>
             </thead>
             <tbody>
-              {products.map((product, idx) => {
+              {filteredProducts.map((product, idx) => {
                 const { _id, name, category, price, qty } = product;
                 return (
                   <tr key={_id}>

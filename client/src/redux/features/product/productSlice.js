@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 const initialState = {
   product: null,
   products: [],
+  filteredProducts: [],
   fetchProductsStatus: IDLE,
   createProductStatus: IDLE,
   message: '',
@@ -15,8 +16,14 @@ const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    calculateStoreVal(state, action) {
-      console.log('store value');
+    filterProducts: (state, action) => {
+      const { products, search } = action.payload;
+      const filteredProducts = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(search.toLowerCase()) ||
+          product.category.toLowerCase().includes(search.toLowerCase())
+      );
+      state.filteredProducts = filteredProducts;
     },
   },
   extraReducers: (builder) => {
@@ -50,6 +57,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { calculateStoreVal } = productSlice.actions;
+export const { filterProducts } = productSlice.actions;
 
 export default productSlice.reducer;
