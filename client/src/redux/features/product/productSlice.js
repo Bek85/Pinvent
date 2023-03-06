@@ -10,13 +10,16 @@ const initialState = {
   fetchProductsStatus: IDLE,
   createProductStatus: IDLE,
   message: '',
+  totalStoreValue: 0,
+  outOfStock: 0,
+  category: [],
 };
 
 const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    filterProducts: (state, action) => {
+    filterProducts(state, action) {
       const { products, search } = action.payload;
       const filteredProducts = products.filter(
         (product) =>
@@ -24,6 +27,46 @@ const productSlice = createSlice({
           product.category.toLowerCase().includes(search.toLowerCase())
       );
       state.filteredProducts = filteredProducts;
+    },
+    getTotalVal(state, action) {
+      const products = action.payload;
+      const array = [];
+      products.map((item) => {
+        const { price, qty } = item;
+        const productValue = price * qty;
+        return array.push(productValue);
+      });
+      const totalValue = array.reduce((a, b) => {
+        return a + b;
+      }, 0);
+      state.totalStoreValue = totalValue;
+    },
+    getStockVal(state, action) {
+      const products = action.payload;
+      const array = [];
+      products.map((item) => {
+        const { qty } = item;
+
+        return array.push(qty);
+      });
+      let count = 0;
+      array.forEach((number) => {
+        if (number === 0 || number === '0') {
+          count += 1;
+        }
+      });
+      state.outOfStock = count;
+    },
+    getCategory(state, action) {
+      const products = action.payload;
+      const array = [];
+      products.map((item) => {
+        const { category } = item;
+
+        return array.push(category);
+      });
+      const uniqueCategory = [...new Set(array)];
+      state.category = uniqueCategory;
     },
   },
   extraReducers: (builder) => {
@@ -57,6 +100,7 @@ const productSlice = createSlice({
   },
 });
 
-export const { filterProducts } = productSlice.actions;
+export const { filterProducts, getTotalVal, getStockVal, getCategory } =
+  productSlice.actions;
 
 export default productSlice.reducer;

@@ -1,4 +1,5 @@
 import ProductList from '@/components/product/product-list/ProductList';
+import ProductSummary from '@/components/product/product-summary/ProductSummary';
 import Spinner from '@/components/spinner/Spinner';
 import useRedirectLoggedOutUser from '@/hooks/useRedirect';
 import { fetchProducts } from '@/redux/features/product/productThunk';
@@ -20,7 +21,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h2>Dashboard</h2>
+      <ProductSummary products={products} />
       {fetchProductsStatus === 'PENDING' && <Spinner />}
       {fetchProductsStatus === 'SUCCESS' && <ProductList products={products} />}
     </div>
