@@ -129,13 +129,15 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //* @route GET /api/users/loggedin
 //* @access Public
 const getLoginStatus = asyncHandler(async (req, res) => {
-  const token = req.headers.cookie;
+  const { cookie } = req.headers;
+
+  const token = cookie.split('token=')[1].split(';')[0];
 
   if (!token) {
     res.json(false);
   }
   const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(verifiedToken);
+
   verifiedToken ? res.json(true) : res.json(false);
 });
 
