@@ -4,6 +4,10 @@ const URLS = {
   productUrl: 'api/products',
 };
 
+const fetchProduct = (id) => {
+  return api.get(`${URLS.productUrl}/${id}`);
+};
+
 const fetchProducts = () => {
   return api.get(URLS.productUrl);
 };
@@ -23,8 +27,9 @@ const deleteProduct = (id) => {
 };
 
 const productApi = {
-  createProduct,
+  fetchProduct,
   fetchProducts,
+  createProduct,
   deleteProduct,
 };
 
