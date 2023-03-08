@@ -41,6 +41,20 @@ export const createProduct = createAsyncThunk(
   }
 );
 
+// Update an existing product
+export const updateProduct = createAsyncThunk(
+  'product/updateProduct',
+  async (formData, thunkAPI) => {
+    const { id } = formData;
+    try {
+      const res = await productApi.updateProduct(id, formData);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 // Delete a product
 export const deleteProduct = createAsyncThunk(
   'product/deleteProduct',

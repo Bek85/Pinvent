@@ -22,6 +22,16 @@ const createProduct = (formData) => {
   });
 };
 
+const updateProduct = (id, formData) => {
+  return api.patch(`${URLS.productUrl}/${id}`, formData, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+      Cache: 'no-cache',
+    },
+  });
+};
+
 const deleteProduct = (id) => {
   return api.delete(`${URLS.productUrl}/${id}`);
 };
@@ -31,6 +41,7 @@ const productApi = {
   fetchProducts,
   createProduct,
   deleteProduct,
+  updateProduct,
 };
 
 export default productApi;

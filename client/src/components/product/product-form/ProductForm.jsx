@@ -7,7 +7,10 @@ import Card from '@/components/card/Card';
 import FormProvider from '@/components/product/product-form/FormProvider';
 import InputField from '@/components/product/product-form/InputField';
 import ReactQuillCustom from '@/components/react-quill-custom/ReactQuillCustom';
-import { createProduct } from '@/redux/features/product/productThunk';
+import {
+  createProduct,
+  updateProduct,
+} from '@/redux/features/product/productThunk';
 import { dispatch } from '@/redux/store';
 
 const productFormSchema = yup.object({
@@ -24,7 +27,7 @@ export default function ProductForm({ isEdit = false, product }) {
 
   const defaultValues = useMemo(
     () => ({
-      image: product?.image || '',
+      image: product?.image.filePath || '',
       name: product?.name || '',
       category: product?.category || '',
       qty: product?.qty || '',
@@ -68,13 +71,26 @@ export default function ProductForm({ isEdit = false, product }) {
     const file = getValues('image');
     data.sku = sku;
     data.image = file;
+    const { name, category, qty, price, description, image } = data;
 
     let formData = new FormData();
     Object.keys(data).forEach((fieldName) => {
       formData.append(fieldName, data[fieldName]);
     });
 
-    await dispatch(createProduct(formData));
+    isEdit
+      ? dispatch(
+          updateProduct({
+            name,
+            category,
+            qty,
+            price,
+            description,
+            image,
+            id: product._id,
+          })
+        )
+      : dispatch(createProduct(formData));
   };
 
   const onFileChange = (evt) => {

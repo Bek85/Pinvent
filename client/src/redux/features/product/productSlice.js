@@ -4,6 +4,7 @@ import {
   fetchProducts,
   createProduct,
   deleteProduct,
+  updateProduct,
 } from './productThunk';
 import { IDLE, PENDING, SUCCESS, ERROR } from '../constants/apiStatus';
 import { toast } from 'react-toastify';
@@ -15,6 +16,7 @@ const initialState = {
   fetchProductStatus: IDLE,
   fetchProductsStatus: IDLE,
   createProductStatus: IDLE,
+  updateProductStatus: IDLE,
   deleteProductStatus: IDLE,
   errorMessage: '',
   totalStoreValue: 0,
@@ -126,6 +128,18 @@ const productSlice = createSlice({
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.deleteProductStatus = ERROR;
+        state.errorMessage = action.payload;
+        toast.error(action.payload);
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.updateProductStatus = PENDING;
+      })
+      .addCase(updateProduct.fulfilled, (state) => {
+        state.updateProductStatus = SUCCESS;
+        toast.success('Product updated successfully');
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.updateProductStatus = ERROR;
         state.errorMessage = action.payload;
         toast.error(action.payload);
       });
