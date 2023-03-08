@@ -11,7 +11,8 @@ import {
   createProduct,
   updateProduct,
 } from '@/redux/features/product/productThunk';
-import { dispatch } from '@/redux/store';
+import { dispatch, useSelector } from '@/redux/store';
+import { useNavigate } from 'react-router-dom';
 
 const productFormSchema = yup.object({
   image: yup.string().required('Image is required').nullable(true),
@@ -24,6 +25,11 @@ const productFormSchema = yup.object({
 
 export default function ProductForm({ isEdit = false, product }) {
   const [imagePreview, setImagePreview] = useState(null);
+  const navigate = useNavigate();
+
+  const { createProductStatus, updateProductStatus } = useSelector(
+    (state) => state.product
+  );
 
   const defaultValues = useMemo(
     () => ({
@@ -91,6 +97,10 @@ export default function ProductForm({ isEdit = false, product }) {
           })
         )
       : dispatch(createProduct(formData));
+
+    if (createProductStatus || updateProductStatus === 'SUCCESS') {
+      navigate('/dashboard');
+    }
   };
 
   const onFileChange = (evt) => {
