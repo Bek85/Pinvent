@@ -30,10 +30,6 @@ export default function ProductDetail() {
     if (isLoggedIn) {
       dispatch(fetchProduct(id));
     }
-
-    if (fetchProductStatus === 'ERROR') {
-      toast.error(errorMessage);
-    }
   }, [isLoggedIn, dispatch]);
 
   return (

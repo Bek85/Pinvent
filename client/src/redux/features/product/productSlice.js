@@ -89,7 +89,7 @@ const productSlice = createSlice({
       .addCase(fetchProduct.rejected, (state, action) => {
         state.fetchProductStatus = ERROR;
         state.errorMessage = action.payload;
-        // toast.error(action.payload);
+        toast.error(action.payload);
       })
       .addCase(fetchProducts.pending, (state) => {
         state.fetchProductsStatus = PENDING;

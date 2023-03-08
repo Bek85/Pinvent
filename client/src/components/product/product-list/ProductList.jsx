@@ -93,15 +93,21 @@ export default function ProductList({ products }) {
                     <td>{qty}</td>
                     <td>${(qty * price).toFixed(2)}</td>
                     <td className='icons'>
-                      <Link to={`/product-detail/${_id}`}>
-                        <AiOutlineEye size={25} color='purple' />
-                      </Link>
-                      <FaEdit size={20} color='green' />
-                      <FaTrashAlt
-                        onClick={() => confirmDelete(_id)}
-                        size={20}
-                        color='red'
-                      />
+                      <span>
+                        <Link to={`/product-detail/${_id}`}>
+                          <AiOutlineEye size={25} color='purple' />
+                        </Link>
+                      </span>
+                      <span>
+                        <FaEdit size={20} color='green' />
+                      </span>
+                      <span>
+                        <FaTrashAlt
+                          onClick={() => confirmDelete(_id)}
+                          size={20}
+                          color='red'
+                        />
+                      </span>
                     </td>
                   </tr>
                 );
