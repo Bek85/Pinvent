@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchProducts, createProduct } from './productThunk';
+import {
+  fetchProduct,
+  fetchProducts,
+  createProduct,
+  deleteProduct,
+  updateProduct,
+} from './productThunk';
 import { IDLE, PENDING, SUCCESS, ERROR } from '../constants/apiStatus';
 import { toast } from 'react-toastify';
 
@@ -7,9 +13,12 @@ const initialState = {
   product: null,
   products: [],
   filteredProducts: [],
+  fetchProductStatus: IDLE,
   fetchProductsStatus: IDLE,
   createProductStatus: IDLE,
-  message: '',
+  updateProductStatus: IDLE,
+  deleteProductStatus: IDLE,
+  errorMessage: '',
   totalStoreValue: 0,
   outOfStock: 0,
   category: [],
@@ -71,6 +80,19 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchProduct.pending, (state) => {
+        state.fetchProductStatus = PENDING;
+      })
+      .addCase(fetchProduct.fulfilled, (state, action) => {
+        state.fetchProductStatus = SUCCESS;
+        state.product = action.payload;
+        toast.success('Product fetched successfully');
+      })
+      .addCase(fetchProduct.rejected, (state, action) => {
+        state.fetchProductStatus = ERROR;
+        state.errorMessage = action.payload;
+        toast.error(action.payload);
+      })
       .addCase(fetchProducts.pending, (state) => {
         state.fetchProductsStatus = PENDING;
       })
@@ -81,7 +103,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.fetchProductsStatus = ERROR;
-        state.message = action.payload;
+        state.errorMessage = action.payload;
         toast.error(action.payload);
       })
       .addCase(createProduct.pending, (state) => {
@@ -94,7 +116,31 @@ const productSlice = createSlice({
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.createProductStatus = ERROR;
-        state.message = action.payload;
+        state.errorMessage = action.payload;
+        toast.error(action.payload);
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.deleteProductStatus = PENDING;
+      })
+      .addCase(deleteProduct.fulfilled, (state) => {
+        state.deleteProductStatus = SUCCESS;
+        toast.success('Product deleted successfully');
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.deleteProductStatus = ERROR;
+        state.errorMessage = action.payload;
+        toast.error(action.payload);
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.updateProductStatus = PENDING;
+      })
+      .addCase(updateProduct.fulfilled, (state) => {
+        state.updateProductStatus = SUCCESS;
+        toast.success('Product updated successfully');
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.updateProductStatus = ERROR;
+        state.errorMessage = action.payload;
         toast.error(action.payload);
       });
   },

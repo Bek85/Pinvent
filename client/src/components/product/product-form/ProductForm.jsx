@@ -7,8 +7,12 @@ import Card from '@/components/card/Card';
 import FormProvider from '@/components/product/product-form/FormProvider';
 import InputField from '@/components/product/product-form/InputField';
 import ReactQuillCustom from '@/components/react-quill-custom/ReactQuillCustom';
-import { createProduct } from '@/redux/features/product/productThunk';
-import { dispatch } from '@/redux/store';
+import {
+  createProduct,
+  updateProduct,
+} from '@/redux/features/product/productThunk';
+import { dispatch, useSelector } from '@/redux/store';
+import { useNavigate } from 'react-router-dom';
 
 const productFormSchema = yup.object({
   image: yup.string().required('Image is required').nullable(true),
@@ -21,10 +25,15 @@ const productFormSchema = yup.object({
 
 export default function ProductForm({ isEdit = false, product }) {
   const [imagePreview, setImagePreview] = useState(null);
+  const navigate = useNavigate();
+
+  const { createProductStatus, updateProductStatus } = useSelector(
+    (state) => state.product
+  );
 
   const defaultValues = useMemo(
     () => ({
-      image: product?.image || '',
+      image: product?.image.filePath || '',
       name: product?.name || '',
       category: product?.category || '',
       qty: product?.qty || '',
@@ -68,13 +77,30 @@ export default function ProductForm({ isEdit = false, product }) {
     const file = getValues('image');
     data.sku = sku;
     data.image = file;
+    const { name, category, qty, price, description, image } = data;
 
     let formData = new FormData();
     Object.keys(data).forEach((fieldName) => {
       formData.append(fieldName, data[fieldName]);
     });
 
-    await dispatch(createProduct(formData));
+    isEdit
+      ? dispatch(
+          updateProduct({
+            name,
+            category,
+            qty,
+            price,
+            description,
+            image,
+            id: product._id,
+          })
+        )
+      : dispatch(createProduct(formData));
+
+    if (createProductStatus || updateProductStatus === 'SUCCESS') {
+      navigate('/dashboard');
+    }
   };
 
   const onFileChange = (evt) => {
