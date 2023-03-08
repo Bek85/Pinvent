@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchProducts, createProduct } from './productThunk';
+import { fetchProducts, createProduct, deleteProduct } from './productThunk';
 import { IDLE, PENDING, SUCCESS, ERROR } from '../constants/apiStatus';
 import { toast } from 'react-toastify';
 
@@ -9,7 +9,8 @@ const initialState = {
   filteredProducts: [],
   fetchProductsStatus: IDLE,
   createProductStatus: IDLE,
-  message: '',
+  deleteProductStatus: IDLE,
+  errorMessage: '',
   totalStoreValue: 0,
   outOfStock: 0,
   category: [],
@@ -81,7 +82,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.fetchProductsStatus = ERROR;
-        state.message = action.payload;
+        state.errorMessage = action.payload;
         toast.error(action.payload);
       })
       .addCase(createProduct.pending, (state) => {
@@ -94,7 +95,19 @@ const productSlice = createSlice({
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.createProductStatus = ERROR;
-        state.message = action.payload;
+        state.errorMessage = action.payload;
+        toast.error(action.payload);
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.deleteProductStatus = PENDING;
+      })
+      .addCase(deleteProduct.fulfilled, (state) => {
+        state.deleteProductStatus = SUCCESS;
+        toast.success('Product deleted successfully');
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.deleteProductStatus = ERROR;
+        state.errorMessage = action.payload;
         toast.error(action.payload);
       });
   },
