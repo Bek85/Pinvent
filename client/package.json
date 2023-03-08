@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prettier:fix": "prettier --config ./prettier.config.cjs --write ./src/**/*.{css,scss,js,ts,jsx,tsx} ",
+    "prettier:check": "prettier --config ./prettier.config.cjs --check ./src/**/*.{css,scss,js,ts,jsx, tsx}"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
@@ -27,6 +29,7 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^3.0.0",
+    "prettier": "^2.8.4",
     "sass": "^1.57.1",
     "vite": "^4.0.0"
   }
