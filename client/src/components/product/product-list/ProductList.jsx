@@ -6,8 +6,11 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { AiOutlineEye } from 'react-icons/ai';
 import Search from '@/components/search/Search';
 import { useEffect, useState } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import { useSelector, dispatch } from '@/redux/store';
 import { filterProducts } from '@/redux/features/product/productSlice';
+import { deleteProduct } from '@/redux/features/product/productThunk';
 
 export default function ProductList({ products }) {
   const [search, setSearch] = useState('');
@@ -35,6 +38,22 @@ export default function ProductList({ products }) {
     setItemOffset(newOffset);
   };
   //   End Pagination
+
+  const confirmDelete = (id) => {
+    confirmAlert({
+      title: 'Delete Product',
+      message: 'Are you sure you want to delete the item?',
+      buttons: [
+        {
+          label: 'Delete',
+          onClick: () => dispatch(deleteProduct(id)),
+        },
+        {
+          label: 'Cancel',
+        },
+      ],
+    });
+  };
 
   return (
     <div className='product-list'>
@@ -76,7 +95,11 @@ export default function ProductList({ products }) {
                     <td className='icons'>
                       <AiOutlineEye size={25} color='purple' />
                       <FaEdit size={20} color='green' />
-                      <FaTrashAlt size={20} color='red' />
+                      <FaTrashAlt
+                        onClick={() => confirmDelete(product._id)}
+                        size={20}
+                        color='red'
+                      />
                     </td>
                   </tr>
                 );

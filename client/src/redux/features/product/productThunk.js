@@ -32,7 +32,8 @@ export const deleteProduct = createAsyncThunk(
   'product/deleteProduct',
   async (id, thunkAPI) => {
     try {
-      return await productApi.deleteProduct(id);
+      await productApi.deleteProduct(id);
+      await thunkAPI.dispatch(fetchProducts());
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
     }

@@ -19,7 +19,7 @@ const createProduct = (formData) => {
 };
 
 const deleteProduct = (id) => {
-  return api.delete(`URLS.productUrl/${id}`);
+  return api.delete(`${URLS.productUrl}/${id}`);
 };
 
 const productApi = {
