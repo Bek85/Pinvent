@@ -25,10 +25,21 @@ export const forgotPassword = (email) => {
   return api.post(URLS.forgotPasswordUrl, email);
 };
 
-export const resetPassword = (userData, resetToken) => {
+export const resetPassword = (resetToken, userData) => {
   return api.put(`${URLS.resetPasswordUrl}/${resetToken}`, userData);
 };
 
 export const getLoginStatus = () => {
   return api.get(URLS.loginStatusUrl);
 };
+
+const authApi = {
+  registerUser,
+  loginUser,
+  logoutUser,
+  forgotPassword,
+  resetPassword,
+  getLoginStatus,
+};
+
+export default authApi;
