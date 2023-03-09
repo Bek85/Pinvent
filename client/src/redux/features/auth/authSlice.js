@@ -14,7 +14,6 @@ import {
 } from '@/redux/features/constants/apiStatus';
 import { createSlice } from '@reduxjs/toolkit';
 
-const name = JSON.parse(localStorage.getItem('name')) || '';
 const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')) || false;
 
 const initialState = {
@@ -31,10 +30,6 @@ const authSlice = createSlice({
     setLoggedInStatus(state, action) {
       state.isLoggedIn = action.payload;
       localStorage.setItem('isLoggedIn', JSON.stringify(action.payload));
-    },
-    setUserName(state, action) {
-      state.name = action.payload;
-      localStorage.setItem('name', JSON.stringify(action.payload));
     },
     saveUser(state, action) {
       const profile = action.payload;
@@ -57,6 +52,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLoggedInStatus, setUserName, saveUser } = authSlice.actions;
+export const { setLoggedInStatus, saveUser } = authSlice.actions;
 
 export default authSlice.reducer;
