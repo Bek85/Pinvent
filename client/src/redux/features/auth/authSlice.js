@@ -15,10 +15,11 @@ import {
 import { createSlice } from '@reduxjs/toolkit';
 
 const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn')) || false;
+const user = JSON.parse(localStorage.getItem('user')) || false;
 
 const initialState = {
   isLoggedIn: isLoggedIn,
-  user: null,
+  user: user,
   errorMessage: '',
   loginUserStatus: IDLE,
 };
@@ -44,6 +45,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loginUserStatus = SUCCESS;
         state.user = action.payload;
+        localStorage.setItem('user', JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginUserStatus = ERROR;
