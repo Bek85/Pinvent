@@ -1,15 +1,15 @@
 import { setLoggedInStatus } from '@/redux/features/auth/authSlice';
 import { useNavigate } from 'react-router';
-import { logoutUser } from '@/api/authApi';
 import { toast } from 'react-toastify';
 import { dispatch, useSelector } from '@/redux/store';
+import { logoutUser } from '@/redux/features/auth/authThunk';
 
 export default function Header() {
   const { user } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
   const logout = async () => {
-    await logoutUser();
+    await dispatch(logoutUser());
     toast.success('Logged out successfully');
     dispatch(setLoggedInStatus(false));
     navigate('/');

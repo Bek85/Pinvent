@@ -17,8 +17,8 @@ export const loginUser = (userCredentials) => {
   return api.post(URLS.loginUserUrl, userCredentials);
 };
 
-export const logoutUser = (userCredentials) => {
-  return api.get(URLS.logoutUserUrl, userCredentials);
+export const logoutUser = () => {
+  return api.get(URLS.logoutUserUrl);
 };
 
 export const forgotPassword = (email) => {

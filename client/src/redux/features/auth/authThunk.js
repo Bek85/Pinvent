@@ -27,9 +27,9 @@ export const loginUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   'user/logoutUser',
-  async (credentials, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const res = await authApi.logoutUser(credentials);
+      const res = await authApi.logoutUser();
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);
