@@ -16,11 +16,6 @@ const UserSchema = yup.object({
   image: yup.string().required('Image is required').nullable(true),
   name: yup.string().required('Name is required'),
   phone: yup.string().required('Phone number is required'),
-  email: yup
-    .string()
-    .required('Email is required')
-    .email('Email must be a valid email address'),
-
   bio: yup.string().required('Bio is required'),
 });
 
@@ -32,7 +27,7 @@ export default function EditProfile() {
 
   const defaultValues = useMemo(
     () => ({
-      image: user?.photo || '',
+      photo: user?.photo || '',
       name: user?.name || '',
       email: user?.email || '',
       phone: user?.phone || '',
@@ -65,7 +60,7 @@ export default function EditProfile() {
     setProfileImage(newFile);
 
     if (file) {
-      setValue('image', file, { shouldValidate: true });
+      setValue('photo', file, { shouldValidate: true });
     }
   };
 
@@ -82,16 +77,12 @@ export default function EditProfile() {
         <form className='--form-control --m' onSubmit={handleSubmit(onSubmit)}>
           <InputField
             name='name'
-            label='Product Name'
+            label='User name'
             error={errors}
             register={register}
           />
-          <InputField
-            name='email'
-            label='Email'
-            error={errors}
-            register={register}
-          />
+          <label htmlFor='email'>Email</label>
+          <input id='email' type='email' value={user?.email} disabled />
           <InputField
             name='phone'
             label='Phone'
@@ -108,7 +99,7 @@ export default function EditProfile() {
           <span className='error'>{errors.bio?.message}</span>
           <input
             type='file'
-            name='image'
+            name='photo'
             placeholder='Image'
             onChange={onFileChange}
           />

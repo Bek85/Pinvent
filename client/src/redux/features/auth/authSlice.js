@@ -2,6 +2,7 @@ import {
   forgotPassword,
   getLoginStatus,
   loginUser,
+  updateUser,
   logoutUser,
   registerUser,
   resetPassword,
@@ -22,6 +23,7 @@ const initialState = {
   user: user,
   errorMessage: '',
   loginUserStatus: IDLE,
+  updateUserStatus: IDLE,
 };
 
 const authSlice = createSlice({
@@ -49,6 +51,18 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginUserStatus = ERROR;
+        state.errorMessage = action.payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.updateUserStatus = PENDING;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.updateUserStatus = SUCCESS;
+        state.user = action.payload;
+        localStorage.setItem('user', JSON.stringify(action.payload));
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.updateUserStatus = ERROR;
         state.errorMessage = action.payload;
       });
   },
