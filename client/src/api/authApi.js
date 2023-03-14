@@ -45,6 +45,7 @@ export const changePassword = (credentials) => {
 
 const authApi = {
   registerUser,
+  updateUser,
   loginUser,
   logoutUser,
   forgotPassword,

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '@/components/card/Card';
 import { useForm, Controller } from 'react-hook-form';
@@ -9,11 +9,12 @@ import './profile.scss';
 import { toast } from 'react-toastify';
 import ChangePassword from '@/components/change-password/ChangePassword';
 import { updateUser } from '@/redux/features/auth/authThunk';
-import { useSelector } from '@/redux/store';
+import { dispatch, useSelector } from '@/redux/store';
 import InputField from '@/components/product/product-form/InputField';
+import Spinner from '@/components/spinner/Spinner';
 
 const UserSchema = yup.object({
-  image: yup.string().required('Image is required').nullable(true),
+  // image: yup.string().required('Image is required').nullable(true),
   name: yup.string().required('Name is required'),
   phone: yup.string().required('Phone number is required'),
   bio: yup.string().required('Bio is required'),
@@ -21,7 +22,7 @@ const UserSchema = yup.object({
 
 export default function EditProfile() {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const { user, updateUserStatus } = useSelector((state) => state.auth);
 
   const [profileImage, setProfileImage] = useState('');
 
@@ -65,11 +66,39 @@ export default function EditProfile() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    const { bio, email, name, phone, photo } = data;
+
+    let imageUrl;
+    if (profileImage) {
+      const image = new FormData();
+      image.append('file', photo);
+      image.append('cloud_name', 'dv3k4vpjc');
+      image.append('upload_preset', 'tckaevpf');
+
+      // First save image to cloudinary
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/dv3k4vpjc/image/upload',
+        { method: 'post', body: image }
+      );
+      const imgData = await response.json();
+      imageUrl = imgData.url.toString();
+    }
+    const formData = {
+      name,
+      phone,
+      email,
+      bio,
+      photo: profileImage ? imageUrl : photo,
+    };
+
+    await dispatch(updateUser(formData));
+    toast.success('User details updated');
+    navigate('/profile');
   };
 
   return (
     <div className='profile --my2'>
+      {updateUserStatus === 'PENDING' && <Spinner />}
       <Card cardClass={'card --flex-dir-column'}>
         <span className='profile-photo'>
           <img src={profileImage || user?.photo} alt='profilepic' />

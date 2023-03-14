@@ -13,7 +13,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 export const updateUser = createAsyncThunk(
-  'user/registerUser',
+  'auth/updateUser',
   async (userData, thunkAPI) => {
     try {
       const res = await authApi.updateUser(userData);
