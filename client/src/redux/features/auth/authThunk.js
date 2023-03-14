@@ -12,6 +12,17 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+export const updateUser = createAsyncThunk(
+  'user/registerUser',
+  async (userData, thunkAPI) => {
+    try {
+      const res = await authApi.updateUser(userData);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
@@ -54,6 +65,17 @@ export const resetPassword = createAsyncThunk(
   async (resetToken, userData, thunkAPI) => {
     try {
       const res = await authApi.resetPassword(resetToken, userData);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const changePassword = createAsyncThunk(
+  'user/changePassword',
+  async (credentials, thunkAPI) => {
+    try {
+      const res = await authApi.changePassword(credentials);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.message);

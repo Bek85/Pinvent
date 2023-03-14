@@ -4,9 +4,11 @@ const URLS = {
   registerUserUrl: 'api/users/register',
   loginUserUrl: 'api/users/login',
   logoutUserUrl: 'api/users/logout',
+  updateUserUrl: 'api/users/updateuser',
   forgotPasswordUrl: 'api/users/forgotpassword',
   resetPasswordUrl: 'api/users/resetpassword',
   loginStatusUrl: 'api/users/loggedin',
+  changePasswordUrl: '/api/users/changepassword',
 };
 
 export const registerUser = (userCredentials) => {
@@ -15,6 +17,10 @@ export const registerUser = (userCredentials) => {
 
 export const loginUser = (userCredentials) => {
   return api.post(URLS.loginUserUrl, userCredentials);
+};
+
+export const updateUser = (userData) => {
+  return api.patch(URLS.updateUserUrl, userData);
 };
 
 export const logoutUser = () => {
@@ -31,6 +37,10 @@ export const resetPassword = (resetToken, userData) => {
 
 export const getLoginStatus = () => {
   return api.get(URLS.loginStatusUrl);
+};
+
+export const changePassword = (credentials) => {
+  return api.patch(URLS.changePasswordUrl, credentials);
 };
 
 const authApi = {
