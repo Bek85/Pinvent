@@ -1,131 +1,126 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '@/components/card/Card';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import './profile.scss';
 import { toast } from 'react-toastify';
 import ChangePassword from '@/components/change-password/ChangePassword';
 import { updateUser } from '@/redux/features/auth/authThunk';
 import { useSelector } from '@/redux/store';
+import InputField from '@/components/product/product-form/InputField';
+
+const productFormSchema = yup.object({
+  image: yup.string().required('Image is required').nullable(true),
+  name: yup.string().required('Name is required'),
+  phone: yup.string().required('Phone number is required'),
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Email must be a valid email address'),
+
+  bio: yup.string().required('Bio is required'),
+});
 
 export default function EditProfile() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  // const { email } = user;
-
-  // useEffect(() => {
-  //   if (!email) {
-  //     navigate('/profile');
-  //   }
-  // }, [email, navigate]);
 
   const [profileImage, setProfileImage] = useState('');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
-  };
+  const defaultValues = useMemo(
+    () => ({
+      image: user?.photo || '',
+      name: user?.name || '',
+      email: user?.email || '',
+      phone: user?.phone || '',
+      bio: user?.bio || '',
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user]
+  );
 
-  const handleImageChange = (e) => {
-    setProfileImage(e.target.files[0]);
-  };
+  const methods = useForm({
+    resolver: yupResolver(productFormSchema),
+    defaultValues,
+  });
 
-  const saveProfile = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      // Handle Image upload
-      let imageURL;
-      if (
-        profileImage &&
-        (profileImage.type === 'image/jpeg' ||
-          profileImage.type === 'image/jpg' ||
-          profileImage.type === 'image/png')
-      ) {
-        const image = new FormData();
-        image.append('file', profileImage);
-        image.append('cloud_name', 'zinotrust');
-        image.append('upload_preset', 'wk66xdkq');
+  const {
+    reset,
+    watch,
+    control,
+    setValue,
+    getValues,
+    handleSubmit,
+    modules,
+    register,
+    formState: { errors, isSubmitting },
+  } = methods;
 
-        // First save image to cloudinary
-        const response = await fetch(
-          'https://api.cloudinary.com/v1_1/zinotrust/image/upload',
-          { method: 'post', body: image }
-        );
-        const imgData = await response.json();
-        imageURL = imgData.url.toString();
+  const onFileChange = (evt) => {
+    const file = evt.target.files[0];
+    const newFile = URL.createObjectURL(file);
+    setProfileImage(newFile);
 
-        // Save Profile
-        const formData = {
-          name: profile.name,
-          phone: profile.phone,
-          bio: profile.bio,
-          photo: profileImage ? imageURL : profile.photo,
-        };
-
-        const data = await updateUser(formData);
-        console.log(data);
-        toast.success('User updated');
-        navigate('/profile');
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-      toast.error(error.message);
+    if (file) {
+      setValue('image', file, { shouldValidate: true });
     }
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data);
   };
 
   return (
     <div className='profile --my2'>
       <Card cardClass={'card --flex-dir-column'}>
         <span className='profile-photo'>
-          <img src={user?.photo} alt='profilepic' />
+          {/* <img src={user?.photo} alt='profilepic' /> */}
+          {profileImage != null ? (
+            <img src={user?.photo || profileImage} alt='profilepic' />
+          ) : (
+            <p>No image set for this product.</p>
+          )}
         </span>
-        <form className='--form-control --m' onSubmit={saveProfile}>
-          <span className='profile-data'>
-            <p>
-              <label>Name:</label>
-              <input
-                type='text'
-                name='name'
-                value={user?.name}
-                onChange={handleInputChange}
-              />
-            </p>
-            <p>
-              <label>Email:</label>
-              <input type='text' name='email' value={user?.email} disabled />
-              <br />
-              <code>Email cannot be changed.</code>
-            </p>
-            <p>
-              <label>Phone:</label>
-              <input
-                type='text'
-                name='phone'
-                value={user?.phone}
-                onChange={handleInputChange}
-              />
-            </p>
-            <p>
-              <label>Bio:</label>
-              <textarea
-                name='bio'
-                value={user?.bio}
-                onChange={handleInputChange}
-                cols='30'
-                rows='10'
-              ></textarea>
-            </p>
-            <p>
-              <label>Photo:</label>
-              <input type='file' name='image' onChange={handleImageChange} />
-            </p>
-            <div>
-              <button className='--btn --btn-primary'>Edit Profile</button>
-            </div>
-          </span>
+        <form className='--form-control --m' onSubmit={handleSubmit(onSubmit)}>
+          <InputField
+            name='name'
+            label='Product Name'
+            error={errors}
+            register={register}
+          />
+          <InputField
+            name='email'
+            label='Email'
+            error={errors}
+            register={register}
+          />
+          <InputField
+            name='phone'
+            label='Phone'
+            error={errors}
+            register={register}
+          />
+          <textarea
+            name='bio'
+            label='Bio'
+            cols='30'
+            rows='10'
+            {...register('bio')}
+          />
+          <span className='error'>{errors.bio?.message}</span>
+          <input
+            type='file'
+            name='image'
+            placeholder='Image'
+            onChange={onFileChange}
+          />
+
+          <div>
+            <button className='--btn --btn-primary'>Update Profile</button>
+          </div>
         </form>
       </Card>
       <br />
