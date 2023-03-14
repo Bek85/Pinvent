@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import authApi from '@/api/authApi';
 
 export const registerUser = createAsyncThunk(
-  'user/registerUser',
+  'auth/registerUser',
   async (credentials, thunkAPI) => {
     try {
       const res = await authApi.registerUser(credentials);
@@ -25,7 +25,7 @@ export const updateUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  'user/loginUser',
+  'auth/loginUser',
   async (credentials, thunkAPI) => {
     try {
       const res = await authApi.loginUser(credentials);
@@ -37,7 +37,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk(
-  'user/logoutUser',
+  'auth/logoutUser',
   async (_, thunkAPI) => {
     try {
       const res = await authApi.logoutUser();
@@ -49,7 +49,7 @@ export const logoutUser = createAsyncThunk(
 );
 
 export const forgotPassword = createAsyncThunk(
-  'user/forgotPassword',
+  'auth/forgotPassword',
   async (email, thunkAPI) => {
     try {
       const res = await authApi.forgotPassword(email);
@@ -61,7 +61,7 @@ export const forgotPassword = createAsyncThunk(
 );
 
 export const resetPassword = createAsyncThunk(
-  'user/resetPassword',
+  'auth/resetPassword',
   async (resetToken, userData, thunkAPI) => {
     try {
       const res = await authApi.resetPassword(resetToken, userData);
@@ -72,7 +72,7 @@ export const resetPassword = createAsyncThunk(
   }
 );
 export const changePassword = createAsyncThunk(
-  'user/changePassword',
+  'auth/changePassword',
   async (credentials, thunkAPI) => {
     try {
       const res = await authApi.changePassword(credentials);
