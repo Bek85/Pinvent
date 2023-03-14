@@ -12,7 +12,7 @@ import { updateUser } from '@/redux/features/auth/authThunk';
 import { useSelector } from '@/redux/store';
 import InputField from '@/components/product/product-form/InputField';
 
-const productFormSchema = yup.object({
+const UserSchema = yup.object({
   image: yup.string().required('Image is required').nullable(true),
   name: yup.string().required('Name is required'),
   phone: yup.string().required('Phone number is required'),
@@ -43,7 +43,7 @@ export default function EditProfile() {
   );
 
   const methods = useForm({
-    resolver: yupResolver(productFormSchema),
+    resolver: yupResolver(UserSchema),
     defaultValues,
   });
 
@@ -77,12 +77,7 @@ export default function EditProfile() {
     <div className='profile --my2'>
       <Card cardClass={'card --flex-dir-column'}>
         <span className='profile-photo'>
-          {/* <img src={user?.photo} alt='profilepic' /> */}
-          {profileImage != null ? (
-            <img src={user?.photo || profileImage} alt='profilepic' />
-          ) : (
-            <p>No image set for this product.</p>
-          )}
+          <img src={profileImage || user?.photo} alt='profilepic' />
         </span>
         <form className='--form-control --m' onSubmit={handleSubmit(onSubmit)}>
           <InputField
