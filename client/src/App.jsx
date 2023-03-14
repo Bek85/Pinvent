@@ -16,6 +16,7 @@ import { getLoginStatus } from '@/api/authApi';
 import { setLoggedInStatus } from '@/redux/features/auth/authSlice';
 import ProductDetail from '@/components/product/product-detail/ProductDetail';
 import EditProduct from '@/pages/editProduct/EditProduct';
+import Profile from '@/pages/profile/Profile';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,16 @@ export default function App() {
             <Sidebar>
               <Layout>
                 <EditProduct />
+              </Layout>
+            </Sidebar>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <Sidebar>
+              <Layout>
+                <Profile />
               </Layout>
             </Sidebar>
           }
