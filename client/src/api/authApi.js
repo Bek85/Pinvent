@@ -51,6 +51,7 @@ const authApi = {
   forgotPassword,
   resetPassword,
   getLoginStatus,
+  changePassword,
 };
 
 export default authApi;

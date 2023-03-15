@@ -24,7 +24,9 @@ const loginSchema = yup.object({
 
 export default function Login() {
   const navigate = useNavigate();
-  const { user, loginUserStatus } = useSelector((state) => state.auth);
+  const { user, loginUserStatus, errorMessage } = useSelector(
+    (state) => state.auth
+  );
   const {
     register,
     handleSubmit,
@@ -35,13 +37,14 @@ export default function Login() {
 
   const submitUserLogin = async (data) => {
     const { email, password } = data;
-    try {
-      await dispatch(loginUser({ email, password }));
+
+    await dispatch(loginUser({ email, password }));
+    if (loginUserStatus === 'SUCCESS') {
       dispatch(setLoggedInStatus(true));
       toast.success(`${user.name} logged in successfully`);
       navigate('/dashboard');
-    } catch (error) {
-      toast.error(error.message);
+    } else {
+      toast.error(errorMessage);
     }
   };
   return (

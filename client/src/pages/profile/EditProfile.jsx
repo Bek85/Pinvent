@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '@/components/card/Card';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -14,7 +14,6 @@ import InputField from '@/components/product/product-form/InputField';
 import Spinner from '@/components/spinner/Spinner';
 
 const UserSchema = yup.object({
-  // image: yup.string().required('Image is required').nullable(true),
   name: yup.string().required('Name is required'),
   phone: yup.string().required('Phone number is required'),
   bio: yup.string().required('Bio is required'),
