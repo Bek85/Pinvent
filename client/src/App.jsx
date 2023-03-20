@@ -9,13 +9,15 @@ import Reset from '@/pages/auth/Reset';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import Sidebar from '@/components/layout/sidebar/Sidebar';
 import Layout from '@/components/layout/Layout';
-import AddProduct from '@/pages/addProduct/AddProduct';
+import AddProduct from '@/pages/products/addProduct/AddProduct';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getLoginStatus } from '@/api/authApi';
 import { setLoggedInStatus } from '@/redux/features/auth/authSlice';
 import ProductDetail from '@/components/product/product-detail/ProductDetail';
-import EditProduct from '@/pages/editProduct/EditProduct';
+import EditProduct from '@/pages/products/editProduct/EditProduct';
+import Profile from '@/pages/profile/ViewProfile';
+import EditProfile from '@/pages/profile/EditProfile';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -71,6 +73,26 @@ export default function App() {
             <Sidebar>
               <Layout>
                 <EditProduct />
+              </Layout>
+            </Sidebar>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <Sidebar>
+              <Layout>
+                <Profile />
+              </Layout>
+            </Sidebar>
+          }
+        />
+        <Route
+          path='/edit-profile'
+          element={
+            <Sidebar>
+              <Layout>
+                <EditProfile />
               </Layout>
             </Sidebar>
           }

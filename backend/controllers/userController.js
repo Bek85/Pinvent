@@ -131,14 +131,13 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const getLoginStatus = asyncHandler(async (req, res) => {
   const { cookie } = req.headers;
 
-  const token = cookie.split('token=')[1].split(';')[0];
-
-  if (!token) {
+  if (!cookie) {
     res.json(false);
+  } else {
+    const token = cookie.split('token=')[1].split(';')[0];
+    const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
+    verifiedToken ? res.json(true) : res.json(false);
   }
-  const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-  verifiedToken ? res.json(true) : res.json(false);
 });
 
 //* @desc Update user details

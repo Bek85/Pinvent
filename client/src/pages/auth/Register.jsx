@@ -5,16 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { registerUser } from '@/api/authApi';
-import {
-  setLoggedInStatus,
-  setUserName,
-} from '@/redux/features/auth/authSlice';
+import { setLoggedInStatus } from '@/redux/features/auth/authSlice';
 import Spinner from '@/components/spinner/Spinner';
+import { dispatch, useSelector } from '@/redux/store';
 
 const schema = yup.object({
   name: yup.string().required('Name is a required field'),
@@ -40,8 +37,9 @@ export default function Register() {
     resolver: yupResolver(schema),
   });
 
+  const { user } = useSelector((state) => state.auth);
+
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const submitUser = async (data) => {
@@ -49,10 +47,8 @@ export default function Register() {
     const userData = { name, email, password };
     setIsLoading(true);
     try {
-      const res = await registerUser(userData);
-
-      await dispatch(setUserName(res.name));
-      await dispatch(setLoggedInStatus(true));
+      await registerUser(userData);
+      dispatch(setLoggedInStatus(true));
       navigate('/dashboard');
       setIsLoading(false);
     } catch (error) {

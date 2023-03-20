@@ -5,15 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
-import {
-  setLoggedInStatus,
-  setUserName,
-} from '@/redux/features/auth/authSlice';
+import { setLoggedInStatus } from '@/redux/features/auth/authSlice';
 import Spinner from '@/components/spinner/Spinner';
-import { useState } from 'react';
-import { loginUser } from '@/api/authApi';
 import { toast } from 'react-toastify';
+import { loginUser } from '@/redux/features/auth/authThunk';
+import { dispatch, useSelector } from '@/redux/store';
 
 const loginSchema = yup.object({
   email: yup
@@ -27,9 +23,10 @@ const loginSchema = yup.object({
 });
 
 export default function Login() {
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user, loginUserStatus, errorMessage } = useSelector(
+    (state) => state.auth
+  );
   const {
     register,
     handleSubmit,
@@ -40,24 +37,19 @@ export default function Login() {
 
   const submitUserLogin = async (data) => {
     const { email, password } = data;
-    const userData = { email, password };
-    setIsLoading(true);
-    try {
-      const res = await loginUser(userData);
 
-      await dispatch(setLoggedInStatus(true));
-      await dispatch(setUserName(res.data.name));
-      toast.success(`${res.data.name} logged in successfully`);
+    await dispatch(loginUser({ email, password }));
+    if (loginUserStatus === 'SUCCESS') {
+      dispatch(setLoggedInStatus(true));
+      toast.success(`${user.name} logged in successfully`);
       navigate('/dashboard');
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(error.response.data.message);
+    } else {
+      toast.error(errorMessage);
     }
   };
   return (
     <div className={`container ${styles.auth}`}>
-      {isLoading && <Spinner />}
+      {loginUserStatus === 'PENDING' && <Spinner />}
 
       <Card>
         <div className={styles.form}>
